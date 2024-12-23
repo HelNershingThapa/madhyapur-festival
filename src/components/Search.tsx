@@ -253,7 +253,7 @@ export function Search() {
   return (
     <div
       className="relative"
-      style={{ width: "min(410px, calc(100vw - 20px))" }}
+      style={{ width: "min(410px, calc(100vw - 12px))" }}
     >
       <Command className="absolute h-max shadow-xl" shouldFilter={false}>
         <div className="relative">

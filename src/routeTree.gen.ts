@@ -15,20 +15,20 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutLeftDetailImport } from './routes/_layout/_left-detail'
-import { Route as LayoutNearbyAmenitySplatImport } from './routes/_layout/nearby.$amenity.$'
 import { Route as LayoutLeftDetailPlaceOsmIdSplatImport } from './routes/_layout/_left-detail.place.$osmId.$'
+import { Route as LayoutLeftDetailNearbyAmenitySplatImport } from './routes/_layout/_left-detail.nearby.$amenity.$'
 import { Route as LayoutLeftDetailEventsMadhyapurFestivalSplatImport } from './routes/_layout/_left-detail.events.madhyapur-festival.$'
 
 // Create Virtual Routes
 
-const LayoutContributionsLazyImport = createFileRoute(
-  '/_layout/contributions',
-)()
 const LayoutSplatLazyImport = createFileRoute('/_layout/$')()
 const LayoutReportIncidentSplatLazyImport = createFileRoute(
   '/_layout/report-incident/$',
 )()
 const LayoutAddPlaceSplatLazyImport = createFileRoute('/_layout/add-place/$')()
+const LayoutLeftDetailContributionsLazyImport = createFileRoute(
+  '/_layout/_left-detail/contributions',
+)()
 const LayoutLeftDetailPlacesPlaceIdLazyImport = createFileRoute(
   '/_layout/_left-detail/places/$placeId',
 )()
@@ -42,14 +42,6 @@ const LayoutRoute = LayoutImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
-
-const LayoutContributionsLazyRoute = LayoutContributionsLazyImport.update({
-  id: '/contributions',
-  path: '/contributions',
-  getParentRoute: () => LayoutRoute,
-} as any).lazy(() =>
-  import('./routes/_layout/contributions.lazy').then((d) => d.Route),
-)
 
 const LayoutSplatLazyRoute = LayoutSplatLazyImport.update({
   id: '/$',
@@ -79,6 +71,17 @@ const LayoutAddPlaceSplatLazyRoute = LayoutAddPlaceSplatLazyImport.update({
   import('./routes/_layout/add-place/$.lazy').then((d) => d.Route),
 )
 
+const LayoutLeftDetailContributionsLazyRoute =
+  LayoutLeftDetailContributionsLazyImport.update({
+    id: '/contributions',
+    path: '/contributions',
+    getParentRoute: () => LayoutLeftDetailRoute,
+  } as any).lazy(() =>
+    import('./routes/_layout/_left-detail.contributions.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const LayoutLeftDetailPlacesPlaceIdLazyRoute =
   LayoutLeftDetailPlacesPlaceIdLazyImport.update({
     id: '/places/$placeId',
@@ -89,12 +92,6 @@ const LayoutLeftDetailPlacesPlaceIdLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const LayoutNearbyAmenitySplatRoute = LayoutNearbyAmenitySplatImport.update({
-  id: '/nearby/$amenity/$',
-  path: '/nearby/$amenity/$',
-  getParentRoute: () => LayoutRoute,
-} as any)
 
 const LayoutDirectionsLocationsModeSplatLazyRoute =
   LayoutDirectionsLocationsModeSplatLazyImport.update({
@@ -111,6 +108,13 @@ const LayoutLeftDetailPlaceOsmIdSplatRoute =
   LayoutLeftDetailPlaceOsmIdSplatImport.update({
     id: '/place/$osmId/$',
     path: '/place/$osmId/$',
+    getParentRoute: () => LayoutLeftDetailRoute,
+  } as any)
+
+const LayoutLeftDetailNearbyAmenitySplatRoute =
+  LayoutLeftDetailNearbyAmenitySplatImport.update({
+    id: '/nearby/$amenity/$',
+    path: '/nearby/$amenity/$',
     getParentRoute: () => LayoutLeftDetailRoute,
   } as any)
 
@@ -146,12 +150,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutSplatLazyImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/contributions': {
-      id: '/_layout/contributions'
+    '/_layout/_left-detail/contributions': {
+      id: '/_layout/_left-detail/contributions'
       path: '/contributions'
       fullPath: '/contributions'
-      preLoaderRoute: typeof LayoutContributionsLazyImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof LayoutLeftDetailContributionsLazyImport
+      parentRoute: typeof LayoutLeftDetailImport
     }
     '/_layout/add-place/$': {
       id: '/_layout/add-place/$'
@@ -167,13 +171,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutReportIncidentSplatLazyImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/nearby/$amenity/$': {
-      id: '/_layout/nearby/$amenity/$'
-      path: '/nearby/$amenity/$'
-      fullPath: '/nearby/$amenity/$'
-      preLoaderRoute: typeof LayoutNearbyAmenitySplatImport
-      parentRoute: typeof LayoutImport
-    }
     '/_layout/_left-detail/places/$placeId': {
       id: '/_layout/_left-detail/places/$placeId'
       path: '/places/$placeId'
@@ -186,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/events/madhyapur-festival/$'
       fullPath: '/events/madhyapur-festival/$'
       preLoaderRoute: typeof LayoutLeftDetailEventsMadhyapurFestivalSplatImport
+      parentRoute: typeof LayoutLeftDetailImport
+    }
+    '/_layout/_left-detail/nearby/$amenity/$': {
+      id: '/_layout/_left-detail/nearby/$amenity/$'
+      path: '/nearby/$amenity/$'
+      fullPath: '/nearby/$amenity/$'
+      preLoaderRoute: typeof LayoutLeftDetailNearbyAmenitySplatImport
       parentRoute: typeof LayoutLeftDetailImport
     }
     '/_layout/_left-detail/place/$osmId/$': {
@@ -208,16 +212,22 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutLeftDetailRouteChildren {
+  LayoutLeftDetailContributionsLazyRoute: typeof LayoutLeftDetailContributionsLazyRoute
   LayoutLeftDetailPlacesPlaceIdLazyRoute: typeof LayoutLeftDetailPlacesPlaceIdLazyRoute
   LayoutLeftDetailEventsMadhyapurFestivalSplatRoute: typeof LayoutLeftDetailEventsMadhyapurFestivalSplatRoute
+  LayoutLeftDetailNearbyAmenitySplatRoute: typeof LayoutLeftDetailNearbyAmenitySplatRoute
   LayoutLeftDetailPlaceOsmIdSplatRoute: typeof LayoutLeftDetailPlaceOsmIdSplatRoute
 }
 
 const LayoutLeftDetailRouteChildren: LayoutLeftDetailRouteChildren = {
+  LayoutLeftDetailContributionsLazyRoute:
+    LayoutLeftDetailContributionsLazyRoute,
   LayoutLeftDetailPlacesPlaceIdLazyRoute:
     LayoutLeftDetailPlacesPlaceIdLazyRoute,
   LayoutLeftDetailEventsMadhyapurFestivalSplatRoute:
     LayoutLeftDetailEventsMadhyapurFestivalSplatRoute,
+  LayoutLeftDetailNearbyAmenitySplatRoute:
+    LayoutLeftDetailNearbyAmenitySplatRoute,
   LayoutLeftDetailPlaceOsmIdSplatRoute: LayoutLeftDetailPlaceOsmIdSplatRoute,
 }
 
@@ -227,20 +237,16 @@ const LayoutLeftDetailRouteWithChildren =
 interface LayoutRouteChildren {
   LayoutLeftDetailRoute: typeof LayoutLeftDetailRouteWithChildren
   LayoutSplatLazyRoute: typeof LayoutSplatLazyRoute
-  LayoutContributionsLazyRoute: typeof LayoutContributionsLazyRoute
   LayoutAddPlaceSplatLazyRoute: typeof LayoutAddPlaceSplatLazyRoute
   LayoutReportIncidentSplatLazyRoute: typeof LayoutReportIncidentSplatLazyRoute
-  LayoutNearbyAmenitySplatRoute: typeof LayoutNearbyAmenitySplatRoute
   LayoutDirectionsLocationsModeSplatLazyRoute: typeof LayoutDirectionsLocationsModeSplatLazyRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutLeftDetailRoute: LayoutLeftDetailRouteWithChildren,
   LayoutSplatLazyRoute: LayoutSplatLazyRoute,
-  LayoutContributionsLazyRoute: LayoutContributionsLazyRoute,
   LayoutAddPlaceSplatLazyRoute: LayoutAddPlaceSplatLazyRoute,
   LayoutReportIncidentSplatLazyRoute: LayoutReportIncidentSplatLazyRoute,
-  LayoutNearbyAmenitySplatRoute: LayoutNearbyAmenitySplatRoute,
   LayoutDirectionsLocationsModeSplatLazyRoute:
     LayoutDirectionsLocationsModeSplatLazyRoute,
 }
@@ -251,12 +257,12 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof LayoutLeftDetailRouteWithChildren
   '/$': typeof LayoutSplatLazyRoute
-  '/contributions': typeof LayoutContributionsLazyRoute
+  '/contributions': typeof LayoutLeftDetailContributionsLazyRoute
   '/add-place/$': typeof LayoutAddPlaceSplatLazyRoute
   '/report-incident/$': typeof LayoutReportIncidentSplatLazyRoute
-  '/nearby/$amenity/$': typeof LayoutNearbyAmenitySplatRoute
   '/places/$placeId': typeof LayoutLeftDetailPlacesPlaceIdLazyRoute
   '/events/madhyapur-festival/$': typeof LayoutLeftDetailEventsMadhyapurFestivalSplatRoute
+  '/nearby/$amenity/$': typeof LayoutLeftDetailNearbyAmenitySplatRoute
   '/place/$osmId/$': typeof LayoutLeftDetailPlaceOsmIdSplatRoute
   '/directions/$locations/$mode/$': typeof LayoutDirectionsLocationsModeSplatLazyRoute
 }
@@ -264,12 +270,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '': typeof LayoutLeftDetailRouteWithChildren
   '/$': typeof LayoutSplatLazyRoute
-  '/contributions': typeof LayoutContributionsLazyRoute
+  '/contributions': typeof LayoutLeftDetailContributionsLazyRoute
   '/add-place/$': typeof LayoutAddPlaceSplatLazyRoute
   '/report-incident/$': typeof LayoutReportIncidentSplatLazyRoute
-  '/nearby/$amenity/$': typeof LayoutNearbyAmenitySplatRoute
   '/places/$placeId': typeof LayoutLeftDetailPlacesPlaceIdLazyRoute
   '/events/madhyapur-festival/$': typeof LayoutLeftDetailEventsMadhyapurFestivalSplatRoute
+  '/nearby/$amenity/$': typeof LayoutLeftDetailNearbyAmenitySplatRoute
   '/place/$osmId/$': typeof LayoutLeftDetailPlaceOsmIdSplatRoute
   '/directions/$locations/$mode/$': typeof LayoutDirectionsLocationsModeSplatLazyRoute
 }
@@ -279,12 +285,12 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/_left-detail': typeof LayoutLeftDetailRouteWithChildren
   '/_layout/$': typeof LayoutSplatLazyRoute
-  '/_layout/contributions': typeof LayoutContributionsLazyRoute
+  '/_layout/_left-detail/contributions': typeof LayoutLeftDetailContributionsLazyRoute
   '/_layout/add-place/$': typeof LayoutAddPlaceSplatLazyRoute
   '/_layout/report-incident/$': typeof LayoutReportIncidentSplatLazyRoute
-  '/_layout/nearby/$amenity/$': typeof LayoutNearbyAmenitySplatRoute
   '/_layout/_left-detail/places/$placeId': typeof LayoutLeftDetailPlacesPlaceIdLazyRoute
   '/_layout/_left-detail/events/madhyapur-festival/$': typeof LayoutLeftDetailEventsMadhyapurFestivalSplatRoute
+  '/_layout/_left-detail/nearby/$amenity/$': typeof LayoutLeftDetailNearbyAmenitySplatRoute
   '/_layout/_left-detail/place/$osmId/$': typeof LayoutLeftDetailPlaceOsmIdSplatRoute
   '/_layout/directions/$locations/$mode/$': typeof LayoutDirectionsLocationsModeSplatLazyRoute
 }
@@ -297,9 +303,9 @@ export interface FileRouteTypes {
     | '/contributions'
     | '/add-place/$'
     | '/report-incident/$'
-    | '/nearby/$amenity/$'
     | '/places/$placeId'
     | '/events/madhyapur-festival/$'
+    | '/nearby/$amenity/$'
     | '/place/$osmId/$'
     | '/directions/$locations/$mode/$'
   fileRoutesByTo: FileRoutesByTo
@@ -309,9 +315,9 @@ export interface FileRouteTypes {
     | '/contributions'
     | '/add-place/$'
     | '/report-incident/$'
-    | '/nearby/$amenity/$'
     | '/places/$placeId'
     | '/events/madhyapur-festival/$'
+    | '/nearby/$amenity/$'
     | '/place/$osmId/$'
     | '/directions/$locations/$mode/$'
   id:
@@ -319,12 +325,12 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/_layout/_left-detail'
     | '/_layout/$'
-    | '/_layout/contributions'
+    | '/_layout/_left-detail/contributions'
     | '/_layout/add-place/$'
     | '/_layout/report-incident/$'
-    | '/_layout/nearby/$amenity/$'
     | '/_layout/_left-detail/places/$placeId'
     | '/_layout/_left-detail/events/madhyapur-festival/$'
+    | '/_layout/_left-detail/nearby/$amenity/$'
     | '/_layout/_left-detail/place/$osmId/$'
     | '/_layout/directions/$locations/$mode/$'
   fileRoutesById: FileRoutesById
@@ -356,10 +362,8 @@ export const routeTree = rootRoute
       "children": [
         "/_layout/_left-detail",
         "/_layout/$",
-        "/_layout/contributions",
         "/_layout/add-place/$",
         "/_layout/report-incident/$",
-        "/_layout/nearby/$amenity/$",
         "/_layout/directions/$locations/$mode/$"
       ]
     },
@@ -367,8 +371,10 @@ export const routeTree = rootRoute
       "filePath": "_layout/_left-detail.tsx",
       "parent": "/_layout",
       "children": [
+        "/_layout/_left-detail/contributions",
         "/_layout/_left-detail/places/$placeId",
         "/_layout/_left-detail/events/madhyapur-festival/$",
+        "/_layout/_left-detail/nearby/$amenity/$",
         "/_layout/_left-detail/place/$osmId/$"
       ]
     },
@@ -376,9 +382,9 @@ export const routeTree = rootRoute
       "filePath": "_layout/$.lazy.tsx",
       "parent": "/_layout"
     },
-    "/_layout/contributions": {
-      "filePath": "_layout/contributions.lazy.tsx",
-      "parent": "/_layout"
+    "/_layout/_left-detail/contributions": {
+      "filePath": "_layout/_left-detail.contributions.lazy.tsx",
+      "parent": "/_layout/_left-detail"
     },
     "/_layout/add-place/$": {
       "filePath": "_layout/add-place/$.lazy.tsx",
@@ -388,16 +394,16 @@ export const routeTree = rootRoute
       "filePath": "_layout/report-incident/$.lazy.tsx",
       "parent": "/_layout"
     },
-    "/_layout/nearby/$amenity/$": {
-      "filePath": "_layout/nearby.$amenity.$.tsx",
-      "parent": "/_layout"
-    },
     "/_layout/_left-detail/places/$placeId": {
       "filePath": "_layout/_left-detail.places.$placeId.lazy.tsx",
       "parent": "/_layout/_left-detail"
     },
     "/_layout/_left-detail/events/madhyapur-festival/$": {
       "filePath": "_layout/_left-detail.events.madhyapur-festival.$.tsx",
+      "parent": "/_layout/_left-detail"
+    },
+    "/_layout/_left-detail/nearby/$amenity/$": {
+      "filePath": "_layout/_left-detail.nearby.$amenity.$.tsx",
       "parent": "/_layout/_left-detail"
     },
     "/_layout/_left-detail/place/$osmId/$": {

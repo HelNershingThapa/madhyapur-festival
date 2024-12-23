@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { SwipeableDrawer } from "@/components/Drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,7 +9,6 @@ export const Route = createFileRoute("/_layout/_left-detail")({
 });
 
 function RouteComponent() {
-  const pathname = useLocation().pathname;
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   if (!isSmallScreen) {
@@ -24,11 +23,7 @@ function RouteComponent() {
 
   return (
     <SwipeableDrawer>
-      {isSmallScreen &&
-        (pathname.startsWith("/place") ||
-          pathname.startsWith("/directions") ||
-          pathname.startsWith("/nearby") ||
-          pathname.startsWith("/events")) && <Outlet />}
+      <Outlet />
     </SwipeableDrawer>
   );
 }

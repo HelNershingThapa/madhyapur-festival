@@ -3,25 +3,22 @@ import { Layer, Source, useMap } from "react-map-gl/maplibre";
 import { uid } from "react-uid";
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  useNavigate,
-  useParams,
-} from "@tanstack/react-router";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { bbox, lineString } from "@turf/turf";
 import axios from "axios";
 import GeoJSON from "geojson";
 
 import PoiListItem from "@/components/PoiListItem";
 import { TypographyH4 } from "@/components/typography";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { amenities } from "@/config";
 import { StateContext, StateDispatchContext } from "@/StateContext";
 import { Place } from "@/types/place";
 
-export const Route = createFileRoute("/_layout/nearby/$amenity/$")({
-  component: RouteComponent,
-});
+export const Route = createFileRoute("/_layout/_left-detail/nearby/$amenity/$")(
+  {
+    component: RouteComponent,
+  },
+);
 
 const getNearbyPlaces = async ({ amenity, latitude, longitude }) => {
   const res = await axios.get(
@@ -42,8 +39,7 @@ const getNearbyPlaces = async ({ amenity, latitude, longitude }) => {
 };
 
 function RouteComponent() {
-  const navigate = useNavigate();
-  const params = useParams({ from: "/_layout/nearby/$amenity/$" });
+  const params = useParams({ from: "/_layout/_left-detail/nearby/$amenity/$" });
   const state = React.useContext(StateContext);
   const dispatch = React.useContext(StateDispatchContext);
   const { current: map } = useMap();
@@ -184,20 +180,16 @@ function RouteComponent() {
           }}
         />
       </Source>
-      <div className="fixed bottom-0 left-0 top-0 z-[1] hidden w-[428px] bg-background pt-[70px] md:block">
-        <ScrollArea className="h-full">
-          <div className="w-full max-w-full py-0">
-            <TypographyH4 className="mb-1 px-3">Results</TypographyH4>
-            {pois.map((poi, index) => (
-              <PoiListItem
-                key={uid(poi, index)}
-                poi={poi}
-                setHoveredPoiIndex={setHoveredPoiIndex}
-                poiIndex={index}
-              />
-            ))}
-          </div>
-        </ScrollArea>
+      <div className="w-full max-w-full py-0">
+        <TypographyH4 className="mb-1 px-3">Results</TypographyH4>
+        {pois.map((poi, index) => (
+          <PoiListItem
+            key={uid(poi, index)}
+            poi={poi}
+            setHoveredPoiIndex={setHoveredPoiIndex}
+            poiIndex={index}
+          />
+        ))}
       </div>
     </>
   );

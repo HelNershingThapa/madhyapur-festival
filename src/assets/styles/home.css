@@ -9,12 +9,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .nearby-overlay {
-    max-width: min(410px, 100vw - 10px);
-  }
-}
-
-@media only screen and (max-width: 768px) {
   .maplibregl-ctrl-attrib {
     display: none;
   }

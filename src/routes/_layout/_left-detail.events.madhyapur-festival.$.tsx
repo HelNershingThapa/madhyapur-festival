@@ -8,7 +8,7 @@ import {
 
 import { createFileRoute } from "@tanstack/react-router";
 import * as turf from "@turf/turf";
-import type { FeatureCollection } from "geojson";
+import type { FeatureCollection, Position } from "geojson";
 import { LngLat } from "maplibre-gl";
 
 import { foodStalls, jatradata } from "@/components/jatra";
@@ -45,28 +45,18 @@ function RouteComponent() {
       },
     });
     const bbox = turf.bbox(jatradata as FeatureCollection) as LngLatBoundsLike;
-    map?.fitBounds(
-      bbox,
-      !isSmallScreen
-        ? {
-            zoom: 14,
-            padding: {
-              left: 540,
-              top: 100,
-              right: 100,
-              bottom: 100,
-            },
-          }
-        : {
-            zoom: 14,
-            padding: {
-              top: 100,
-              left: 50,
-              right: 50,
-              bottom: 887,
-            },
-          },
-    );
+    const padding = !isSmallScreen
+      ? {
+          left: 540,
+          top: 100,
+          right: 100,
+          bottom: 100,
+        }
+      : {
+          top: 100,
+          bottom: 200,
+        };
+    map?.fitBounds(bbox, { zoom: 14, padding });
   }, [dispatch, isSmallScreen, map]);
 
   const tabList = [
@@ -87,6 +77,24 @@ function RouteComponent() {
       label: "Toilet",
     },
   ];
+
+  const flyToCoordinates = (coordinates: Position) => {
+    map?.flyTo({
+      center: new LngLat(coordinates[0], coordinates[1]),
+      zoom: 17,
+      padding: !isSmallScreen
+        ? {
+            left: 540,
+            top: 100,
+            right: 100,
+            bottom: 100,
+          }
+        : {
+            top: 100,
+            bottom: 650,
+          },
+    });
+  };
 
   return (
     <div>
@@ -138,16 +146,7 @@ function RouteComponent() {
                 key={event.properties.title}
                 className="px-2"
                 onClick={() =>
-                  map?.flyTo({
-                    center: new LngLat(
-                      event.geometry.coordinates[0],
-                      event.geometry.coordinates[1],
-                    ),
-                    zoom: 17,
-                    padding: {
-                      left: 450,
-                    },
-                  })
+                  flyToCoordinates(event.geometry.coordinates as Position)
                 }
               >
                 <AccordionTrigger className="text-left text-sm">
@@ -177,16 +176,7 @@ function RouteComponent() {
                 className="px-2"
                 onClick={() => {
                   setActiveSelectionIdentifier(event.properties.identifier);
-                  map?.flyTo({
-                    center: new LngLat(
-                      event.geometry.coordinates[0],
-                      event.geometry.coordinates[1],
-                    ),
-                    zoom: 17,
-                    padding: {
-                      left: 450,
-                    },
-                  });
+                  flyToCoordinates(event.geometry.coordinates as Position);
                 }}
               >
                 <AccordionTrigger className="text-left text-sm">
@@ -202,6 +192,8 @@ function RouteComponent() {
             ))}
           </Accordion>
         </TabsContent>
+        <TabsContent value="parking">COMING SOON...</TabsContent>
+        <TabsContent value="toilet">COMING SOON...</TabsContent>
       </Tabs>
       <Source id="venues" type="geojson" data={jatradata}>
         <Layer
