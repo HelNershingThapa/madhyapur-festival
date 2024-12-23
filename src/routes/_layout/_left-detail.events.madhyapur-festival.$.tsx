@@ -174,11 +174,11 @@ function RouteComponent() {
             "text-optional": true,
             "text-variable-anchor": ["right", "left"],
             "text-radial-offset": 1.4,
-            "text-size": 13,
+            "text-size": 14,
           }}
           paint={{
             "text-halo-color": "rgba(255, 255, 255, 1)",
-            "text-color": "#101640",
+            "text-color": "#e85d1c",
             "text-halo-width": 2,
           }}
         />
