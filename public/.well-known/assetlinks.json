@@ -1,0 +1,17 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.baato",
+      "sha256_cert_fingerprints": [
+        "CD:2B:F1:EA:B6:FB:14:6C:B8:18:38:B2:D3:8A:C8:82:FD:B8:EF:E4:BD:32:28:6F:14:9A:61:35:82:9D:13:23",
+        "3C:82:79:D2:23:4D:CE:C6:79:6E:46:6F:DF:C5:7B:8E:93:FF:8C:73:E6:CE:3C:50:BE:A9:AF:5E:B4:40:57:98",
+        "C1:44:63:6E:C5:B8:FB:89:45:7A:59:DD:83:9F:27:EF:AB:25:A0:5E:BB:65:9A:53:60:91:4E:DF:01:44:47:3C",
+        "56:B0:A7:1A:77:EE:62:BC:8F:A3:EF:82:20:A6:5D:26:6D:FD:61:F8:81:D9:44:B0:66:9B:0C:07:56:11:04:B0",
+        "42:11:17:2F:75:D7:09:18:61:64:D6:10:AA:4C:AB:C6:23:FB:78:6A:6E:C3:74:53:6E:F2:AE:CC:35:83:38:C5",
+        "D2:54:74:42:6C:E7:C8:AA:F1:65:3B:AD:ED:2C:B2:17:F8:79:62:38:A2:B7:BE:5A:9C:7F:51:CB:91:10:68:BE"
+      ]
+    }
+  }
+]

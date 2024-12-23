@@ -1,0 +1,92 @@
+image: docker:latest
+services:
+  - docker:dind
+stages:
+  - build
+  - stage
+  - release
+  - deploy
+
+variables:
+  DOCKER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  DOCKER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+
+#
+# Login to Gitlab Docker Registery
+# Download and Install kubectl
+#
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN code.kathmandulivinglabs.org:5555
+  - sudo apt-get install -y curl
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+
+#
+# Build Test Image to Deploy into Staging Environment
+#
+build_stage:
+  stage: build
+  script:
+    - docker build --pull -t $DOCKER_TEST_IMAGE .
+    - docker push $DOCKER_TEST_IMAGE
+  only:
+    - deploy
+
+#
+# Deploy into Staging Environment
+#
+deployment_to_staging:
+  stage: stage
+  environment:
+    name: staging
+    url: https://maps-staging.baato.io
+  script:
+    - echo "Deploying to staging server"
+    - echo "Docker stage image is - $DOCKER_TEST_IMAGE"
+    # Replace the placeholder in deployment files with respective namepsace, node type and image build version
+    - >
+      sed \
+        -e 's#_K8S_NAMESPACE_#'"baato-staging"'#g' \
+        -e 's#_K8S_NODETYPE_#'"staging"'#g' \
+        -e 's#_API_BASE_URL_#'"https://api-staging.baato.io"'#g' \
+        -e 's#_DOCKER_IMAGE_#'"$DOCKER_TEST_IMAGE"'#g' ./k8s/deployment.tpl.yaml > staging.yaml;
+    - kubectl apply -f staging.yaml
+  only:
+    - deploy
+
+#
+# Build release image for production
+#
+release:
+  stage: release
+  script:
+    - echo "Release tag is - $CI_COMMIT_TAG"
+    - docker pull $DOCKER_TEST_IMAGE
+    - docker tag $DOCKER_TEST_IMAGE $DOCKER_RELEASE_IMAGE
+    - docker push $DOCKER_RELEASE_IMAGE
+  only:
+    - tags
+
+#
+# Deploy into Production Environment
+#
+deployment_to_production:
+  stage: deploy
+  script:
+    - echo "Deploying to production server"
+    - echo "Production image is - $DOCKER_RELEASE_IMAGE"
+    # Replace the placeholder in deployment files with respective namepsace, node type and image build version
+    - >
+      sed \
+        -e 's#_K8S_NAMESPACE_#'"baato-prod"'#g' \
+        -e 's#_K8S_NODETYPE_#'"prod"'#g' \
+        -e 's#_API_BASE_URL_#'"https://api.baato.io"'#g' \
+        -e 's#_DOCKER_IMAGE_#'"$DOCKER_RELEASE_IMAGE"'#g' ./k8s/deployment.tpl.yaml > production.yaml;
+    - kubectl apply -f production.yaml
+  environment:
+    name: production
+    url: https://maps.baato.io
+  when: manual
+  only:
+    - tags

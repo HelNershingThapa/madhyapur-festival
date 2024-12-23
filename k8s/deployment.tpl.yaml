@@ -1,0 +1,97 @@
+# --------------------------------------------------------
+# Baato Web Maps APP
+# Deployment template
+#
+#
+# Variables for production and staging applied through .gitlab-ci.yml
+#
+# _K8S_NAMESPACE_: baato-prod | baato-staging
+# _DOCKER_IMAGE_: $DOCKER_TEST_IMAGE | $DOCKER_RELEASE_IMAGE
+# _K8S_NODETYPE_: prod | staging
+# _API_BASE_URL_: https://api.baato.io | https://api-staging.baato.io
+# --------------------------------------------------------
+
+#
+# Configmap
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: baato-webmaps-app-env-configmap
+  namespace: _K8S_NAMESPACE_
+  labels:
+    tier: backend
+data:
+  #
+  # Client Config
+  #
+  API_BASE_URL: _API_BASE_URL_
+  API_VERSION: v1
+
+---
+#
+# Service
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: baato-webmaps-app
+  namespace: _K8S_NAMESPACE_
+  labels:
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: baato-webmaps-app
+    tier: frontend
+
+---
+# Deployment
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baato-webmaps-app
+  namespace: _K8S_NAMESPACE_
+  labels:
+    app: baato-webmaps-app
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: baato-webmaps-app
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: baato-webmaps-app
+        tier: frontend
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+        - name: baato-webmaps-app
+          image: _DOCKER_IMAGE_
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      imagePullSecrets:
+        - name: gitlab-registry-secret
+      # Deploy to the specific node (staging or production based on _K8S_NODETYPE_ variable)
+      nodeSelector:
+        type: _K8S_NODETYPE_
+      volumes:
+        - emptyDir: {}
+          name: tmp

@@ -1,0 +1,39 @@
+@media only screen and (max-width: 768px) {
+  .maplibregl-ctrl-bottom-right div:nth-child(2) {
+    display: none;
+  }
+}
+
+.nearby-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .nearby-overlay {
+    max-width: min(410px, 100vw - 10px);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .maplibregl-ctrl-attrib {
+    display: none;
+  }
+}
+
+.style-layers {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  border-radius: 8px;
+  height: 75px;
+  width: 75px;
+}
+
+.style-layers:hover {
+  outline: 4px solid #fff;
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}

@@ -1,0 +1,291 @@
+{
+  "data": [
+    {
+      "category": "Food and Drink",
+      "icon": "Food and Drink-20",
+      "is_selected": false,
+      "subcategories": [
+        "Food and Drink - other category",
+        "Restaurant",
+        "Cafe",
+        "Bar",
+        "Bakery",
+        "Coffee Shop",
+        "Ice Cream Parlour",
+        "Night Club",
+        "Chiya Pasal",
+        "Mithai Pasal",
+        "Paan Pasal"
+      ]
+    },
+    {
+      "category": "Shopping",
+      "icon": "Shopping-20",
+      "is_selected": false,
+      "subcategories": [
+        "Shopping - other category",
+        "Kirana Pasal",
+        "Grocery Shop",
+        "Supermarket",
+        "Shopping Mall",
+        "Book Store",
+        "Flower Shop",
+        "Clothing Store",
+        "Shoe Store",
+        "Furniture Shop",
+        "Construction Store",
+        "Automobile Showroom",
+        "Mobile Store",
+        "Computer Store",
+        "Cosmetics Store",
+        "Electronics Store",
+        "Jewelry Store",
+        "Hardware Shop",
+        "Tobacco Shop",
+        "Sports Shop",
+        "Party Shop",
+        "Nursery"
+      ]
+    },
+    {
+      "category": "Shopping: Market Place",
+      "icon": "Market Place-20",
+      "is_selected": false,
+      "subcategories": [
+        "Market Place - other category",
+        "Haat Bazaar",
+        "Tarkari Bazaar",
+        "Farmers Market"
+      ]
+    },
+    {
+      "category": "Recreation & Entertainment",
+      "icon": "Recreation & Entertainment-20",
+      "is_selected": false,
+      "subcategories": [
+        "Recreation & Entertainment - other category",
+        "Party Palace / Venue",
+        "Futsal",
+        "Swimming Pool",
+        "Basketball Court",
+        "Badminton Court",
+        "Volleyball Court",
+        "Tabletennis Court",
+        "Tennis Court",
+        "Sports Club",
+        "Museum",
+        "Gym",
+        "Zoo",
+        "Art Gallery",
+        "Cinema",
+        "Videogame Parlour",
+        "Amusement Park / Fun Park",
+        "Trampoline Park",
+        "Skating Center"
+      ]
+    },
+    {
+      "category": "Nature",
+      "icon": "Nature-20",
+      "is_selected": false,
+      "subcategories": [
+        "Nature - other category",
+        "National Park",
+        "Protected area",
+        "Community forest",
+        "Park",
+        "Hiking area",
+        "Chaur",
+        "Natural Pool",
+        "View Point",
+        "Tourist Attraction",
+        "Waterfall"
+      ]
+    },
+    {
+      "category": "Health Services",
+      "icon": "Health Services-20",
+      "is_selected": false,
+      "subcategories": [
+        "Health Services - other category",
+        "Hospital",
+        "Clinic",
+        "Dental Clinic",
+        "Dermatologist",
+        "Eye Clinic",
+        "Mental Health Service",
+        "Health Post / Center",
+        "Pharmacy",
+        "Ayurvedic Clinic / Pharmacy"
+      ]
+    },
+    {
+      "category": "Services",
+      "icon": "Services-20",
+      "is_selected": false,
+      "subcategories": [
+        "Services - other category",
+        "Public Toilets",
+        "Bank",
+        "ATM",
+        "Bus Stop",
+        "Parking",
+        "Auto Workshop",
+        "Barber Shop",
+        "Beauty Parlour",
+        "Car wash",
+        "Insurance Company",
+        "Dry cleaning",
+        "Mobile Repair Shop",
+        "Nail Salon",
+        "Photography Studio",
+        "Tailor",
+        "Travel Agency",
+        "Driving Center"
+      ]
+    },
+    {
+      "category": "Hotels & lodging",
+      "icon": "Hotels & lodging-20",
+      "is_selected": false,
+      "subcategories": [
+        "Hotels & lodging - other category",
+        "Hotel",
+        "Teahouse",
+        "Hostel",
+        "Villa",
+        "Campground",
+        "Homestay",
+        "Bed and Breakfast (BnB)"
+      ]
+    },
+    {
+      "category": "Fuel & Energy",
+      "icon": "Fuel & Energy-20",
+      "is_selected": false,
+      "subcategories": [
+        "Fuel & Energy - other category",
+        "Petrol Pump",
+        "Charging Station",
+        "Gas Supplier"
+      ]
+    },
+    {
+      "category": "Religion",
+      "icon": "Religion-20",
+      "is_selected": false,
+      "subcategories": [
+        "Religion - other category",
+        "Place of worship",
+        "Temple / Mandir",
+        "Stupa",
+        "Monastery",
+        "Church",
+        "Mosque",
+        "Religious area"
+      ]
+    },
+    {
+      "category": "Office & Industrial",
+      "is_selected": false,
+      "icon": "Office & Industrial-20",
+      "subcategories": [
+        "Office & Industrial - other category",
+        "NGO / INGO",
+        "Private Company",
+        "Public Company",
+        "Corporate Office",
+        "Warehouse",
+        "Wholesaler",
+        "Factory"
+      ]
+    },
+    {
+      "category": "Residential",
+      "is_selected": false,
+      "icon": "Residential-20",
+      "subcategories": ["Residential - other category", "Housing", "Apartment"]
+    },
+    {
+      "category": "Education",
+      "icon": "Education-20",
+      "is_selected": false,
+      "subcategories": [
+        "Education - other category",
+        "School",
+        "Pre-School / Kindergarten",
+        "Learning center",
+        "College",
+        "University"
+      ]
+    },
+    {
+      "category": "Landmark",
+      "icon": "Landmark-20",
+      "is_selected": false,
+      "subcategories": [
+        "Landmark - other category",
+        "Chowk",
+        "Statue",
+        "Pipal Bot",
+        "Pati",
+        "Chautari"
+      ]
+    },
+    {
+      "category": "Public Service",
+      "icon": "Public Service-20",
+      "is_selected": false,
+      "subcategories": [
+        "Public Service - other category",
+        "Post Office",
+        "Police",
+        "Army",
+        "Fire Brigade",
+        "Ministry",
+        "Ward Office",
+        "Citizenship Office",
+        "Passport Office",
+        "National ID Office",
+        "Driving License Office",
+        "Tax Office",
+        "District Court",
+        "High Court",
+        "Supreme Court",
+        "Office of Municipal Executive"
+      ]
+    },
+    {
+      "category": "Searchable",
+      "icon": "Other Category-20",
+      "is_selected": false,
+      "subcategories": [
+        "Other Category",
+        "Baby Clothing Store",
+        "Baby Store",
+        "DJ Services",
+        "Dairy",
+        "Dairy Store",
+        "Dairy Farm",
+        "E commerce service agency",
+        "Ear piercing",
+        "Fabric Store",
+        "Facial spa",
+        "Faculty of arts",
+        "Faculty of medicine",
+        "Faculty of engineering",
+        "Faculty of law",
+        "GPS supplier",
+        "Game store",
+        "Garbage dump",
+        "Garbage collection service",
+        "Ice supplier",
+        "Ice skating rink",
+        "Karaoke bar",
+        "Karate school",
+        "Labour union",
+        "MRI center"
+      ]
+    }
+  ]
+}
