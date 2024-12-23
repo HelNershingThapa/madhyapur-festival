@@ -304,6 +304,7 @@ export const foodStalls = {
       },
       properties: {
         title: "लाछीको चोक",
+        identifier: "gav5feJJ",
       },
     },
     {
@@ -314,6 +315,7 @@ export const foodStalls = {
       },
       properties: {
         title: "लाछीटोल पाटी",
+        identifier: "ChXBgPOo",
       },
     },
     {
@@ -324,6 +326,7 @@ export const foodStalls = {
       },
       properties: {
         title: "विष्णुघाः",
+        identifier: "eSlGAt6X",
       },
     },
     {
@@ -334,6 +337,7 @@ export const foodStalls = {
       },
       properties: {
         title: "खाँसी",
+        identifier: "KgzTxVsW",
       },
     },
     {
@@ -344,6 +348,7 @@ export const foodStalls = {
       },
       properties: {
         title: "द्योबु",
+        identifier: "hm7496Vr",
       },
     },
     {
@@ -354,6 +359,7 @@ export const foodStalls = {
       },
       properties: {
         title: "बहानानी",
+        identifier: "chVjUHEY",
       },
     },
     {
@@ -364,6 +370,7 @@ export const foodStalls = {
       },
       properties: {
         title: "दिगु द्वकं केवा",
+        identifier: "W25pNbU7",
       },
     },
     {
@@ -374,6 +381,7 @@ export const foodStalls = {
       },
       properties: {
         title: "ताहाननी ल्हो फह",
+        identifier: "E8An1Uyb",
       },
     },
     {
@@ -384,6 +392,7 @@ export const foodStalls = {
       },
       properties: {
         title: "वाचुननी",
+        identifier: "vkeKhdSM",
       },
     },
     {
@@ -394,6 +403,7 @@ export const foodStalls = {
       },
       properties: {
         title: "तछुटोल",
+        identifier: "Ngzy3KWE",
       },
     },
     {
@@ -404,6 +414,7 @@ export const foodStalls = {
       },
       properties: {
         title: "सु“गा टोल",
+        identifier: "Z63Dl9gM",
       },
     },
     {
@@ -414,6 +425,7 @@ export const foodStalls = {
       },
       properties: {
         title: "वामुने टोल",
+        identifier: "wIQCUKcG",
       },
     },
     {
@@ -424,6 +436,7 @@ export const foodStalls = {
       },
       properties: {
         title: "मरुटोल गुर्जु चोक",
+        identifier: "sBq6JXXb",
       },
     },
     {
@@ -434,6 +447,7 @@ export const foodStalls = {
       },
       properties: {
         title: "लाछी nagadesh",
+        identifier: "l82h1VfM",
       },
     },
     {
@@ -444,6 +458,7 @@ export const foodStalls = {
       },
       properties: {
         title: "दथुटोल गछें",
+        identifier: "YDcCIEVf",
       },
     },
   ],

@@ -14,17 +14,33 @@ export function MapImage() {
       });
     }
 
+    // MADHYAPUR FESTIVAL STARTS
     if (!map?.hasImage("jatra-marker")) {
       map?.loadImage("/img/jatra-marker.png").then(({ data }) => {
         if (!map?.hasImage("jatra-marker")) map?.addImage("jatra-marker", data);
       });
     }
 
-    if (!map?.hasImage("jatra-food")) {
-      map?.loadImage("/img/jatra-food.png").then(({ data }) => {
-        if (!map?.hasImage("jatra-food")) map?.addImage("jatra-food", data);
+    if (!map?.hasImage("stall-marker")) {
+      map?.loadImage("/img/stall-marker.png").then(({ data }) => {
+        if (!map?.hasImage("stall-marker")) map?.addImage("stall-marker", data);
       });
     }
+
+    if (!map?.hasImage("parking-marker")) {
+      map?.loadImage("/img/parking-marker.png").then(({ data }) => {
+        if (!map?.hasImage("parking-marker"))
+          map?.addImage("parking-marker", data);
+      });
+    }
+
+    if (!map?.hasImage("toilet-marker")) {
+      map?.loadImage("/img/toilet-marker.png").then(({ data }) => {
+        if (!map?.hasImage("toilet-marker"))
+          map?.addImage("toilet-marker", data);
+      });
+    }
+    // MADHYAPUR FESTIVAL ENDS
 
     incidentReports.forEach((icon) => {
       if (!map?.hasImage(icon.label)) {

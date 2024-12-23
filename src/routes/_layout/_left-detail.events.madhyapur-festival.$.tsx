@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Layer,
   type LngLatBoundsLike,
@@ -33,6 +33,8 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const dispatch = React.useContext(StateDispatchContext);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
+  const [activeSelectionIdentifier, setActiveSelectionIdentifier] =
+    useState<string>("");
   const { current: map } = useMap();
 
   useEffect(() => {
@@ -67,6 +69,25 @@ function RouteComponent() {
     );
   }, [dispatch, isSmallScreen, map]);
 
+  const tabList = [
+    {
+      value: "programs",
+      label: "Programs",
+    },
+    {
+      value: "stalls",
+      label: "Food Stalls",
+    },
+    {
+      value: "parking",
+      label: "Parking",
+    },
+    {
+      value: "toilet",
+      label: "Toilet",
+    },
+  ];
+
   return (
     <div>
       <div className="flex flex-col-reverse md:flex-col">
@@ -86,15 +107,31 @@ function RouteComponent() {
         </div>
       </div>
       <Separator />
-      <Tabs defaultValue="programs" className="mt-1 w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="programs">Programs</TabsTrigger>
-          <TabsTrigger value="stalls">Food Stalls</TabsTrigger>
-          <TabsTrigger value="parking">Parking</TabsTrigger>
-          <TabsTrigger value="toilet">Toilet</TabsTrigger>
-        </TabsList>
+      <Tabs
+        defaultValue="programs"
+        className="mt-1 w-full"
+        onValueChange={() => setActiveSelectionIdentifier("")}
+      >
+        <div className="flex items-center justify-between border-b border-gray-300 pt-2">
+          <TabsList className="grid w-full translate-y-[6px] grid-cols-4 bg-transparent">
+            {tabList.map((tabOption) => (
+              <TabsTrigger
+                key={tabOption.value}
+                value={tabOption.value}
+                className="rounded-none border-b-[3px] border-transparent bg-transparent p-0 pb-1.5 data-[state=active]:border-b-primary data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-primary"
+              >
+                {tabOption.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
         <TabsContent value="programs">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            onValueChange={(value) => setActiveSelectionIdentifier(value)}
+          >
             {jatradata.features.map((event) => (
               <AccordionItem
                 value={event.properties.title}
@@ -127,13 +164,19 @@ function RouteComponent() {
           </Accordion>
         </TabsContent>
         <TabsContent value="stalls">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            onValueChange={(value) => setActiveSelectionIdentifier(value)}
+          >
             {foodStalls.features.map((event) => (
               <AccordionItem
-                value={event.properties.title}
-                key={event.properties.title}
+                value={event.properties.identifier}
+                key={event.properties.identifier}
                 className="px-2"
-                onClick={() =>
+                onClick={() => {
+                  setActiveSelectionIdentifier(event.properties.identifier);
                   map?.flyTo({
                     center: new LngLat(
                       event.geometry.coordinates[0],
@@ -143,8 +186,8 @@ function RouteComponent() {
                     padding: {
                       left: 450,
                     },
-                  })
-                }
+                  });
+                }}
               >
                 <AccordionTrigger className="text-left text-sm">
                   <div className="flex flex-col">
@@ -160,12 +203,23 @@ function RouteComponent() {
           </Accordion>
         </TabsContent>
       </Tabs>
-      <Source type="geojson" data={jatradata}>
+      <Source id="venues" type="geojson" data={jatradata}>
         <Layer
+          id="venues"
           type="symbol"
           layout={{
-            "icon-image": "jatra-marker",
-            "icon-size": 1,
+            "icon-image": [
+              "case",
+              ["==", ["get", "title"], activeSelectionIdentifier],
+              "selected-marker",
+              "jatra-marker",
+            ],
+            "icon-size": [
+              "case",
+              ["==", ["get", "title"], activeSelectionIdentifier],
+              0.6,
+              1,
+            ],
             "text-field": ["get", "title"],
             "icon-allow-overlap": true,
             "text-font": ["OpenSans"],
@@ -183,26 +237,24 @@ function RouteComponent() {
           }}
         />
       </Source>
-      <Source type="geojson" data={foodStalls}>
+      <Source id="stalls" type="geojson" data={foodStalls}>
         <Layer
+          id="stalls"
           type="symbol"
           layout={{
-            "icon-image": "jatra-food",
-            "icon-size": 0.04,
-            "text-field": ["get", "title"],
+            "icon-image": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              "selected-marker",
+              "stall-marker",
+            ],
+            "icon-size": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              0.6,
+              0.6,
+            ],
             "icon-allow-overlap": true,
-            "text-font": ["OpenSans"],
-            "text-allow-overlap": false,
-            "text-ignore-placement": false,
-            "text-optional": true,
-            "text-variable-anchor": ["right", "left"],
-            "text-radial-offset": 1.4,
-            "text-size": 13,
-          }}
-          paint={{
-            "text-halo-color": "rgba(255, 255, 255, 1)",
-            "text-color": "#101640",
-            "text-halo-width": 2,
           }}
         />
       </Source>

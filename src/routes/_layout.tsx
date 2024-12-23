@@ -11,9 +11,7 @@ export const Route = createFileRoute("/_layout")({
 
 function RouteComponent() {
   const location = useLocation();
-  const showNearbyChips =
-    !location.pathname.startsWith("/places/") &&
-    !location.pathname.startsWith("/directions/");
+  const showNearbyChips = location.pathname === "/";
 
   return (
     <RootMap>
