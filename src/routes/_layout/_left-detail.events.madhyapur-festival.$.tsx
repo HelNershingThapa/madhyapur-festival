@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Layer,
   type LngLatBoundsLike,
@@ -6,12 +6,14 @@ import {
   useMap,
 } from "react-map-gl/maplibre";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as turf from "@turf/turf";
 import type { FeatureCollection, Position } from "geojson";
 import { Bike, Car } from "lucide-react";
 import { LngLat } from "maplibre-gl";
 
+import { Icons } from "@/components/icons";
 import { foodStalls, jatradata, parkings } from "@/components/jatra";
 import { TypographyH4 } from "@/components/typography";
 import {
@@ -20,10 +22,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { StateDispatchContext } from "@/StateContext";
+import BaatoService from "@/utils/baatoService";
 
 export const Route = createFileRoute(
   "/_layout/_left-detail/events/madhyapur-festival/$",
@@ -32,11 +36,27 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const baatoService = useMemo(
+    () => new BaatoService(import.meta.env.VITE_BAATO_API_URL),
+    [],
+  );
   const dispatch = React.useContext(StateDispatchContext);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
+  const [tabValue, setTabValue] = useState<string>("programs");
   const [activeSelectionIdentifier, setActiveSelectionIdentifier] =
     useState<string>("");
   const { current: map } = useMap();
+
+  const routingPoints = jatradata.features.map((feature) => ({
+    query: "baalho",
+    coordinates: feature.geometry.coordinates as Position,
+  }));
+
+  const { data: routes } = useQuery({
+    queryKey: ["directions", routingPoints, "foot"],
+    queryFn: async () => await baatoService.routing(routingPoints, "foot"),
+  });
 
   useEffect(() => {
     dispatch({
@@ -97,6 +117,17 @@ function RouteComponent() {
     });
   };
 
+  const handleDirectionsClick = (coordinates: Position) => {
+    navigate({
+      to: "/directions/$locations/$mode/$",
+      from: "/events/madhyapur-festival/$",
+      params: {
+        locations: `,,${coordinates[1]},${coordinates[0]}`,
+        mode: "car",
+      },
+    });
+  };
+
   return (
     <div>
       <div className="flex flex-col-reverse md:flex-col">
@@ -119,7 +150,11 @@ function RouteComponent() {
       <Tabs
         defaultValue="programs"
         className="mt-1 w-full"
-        onValueChange={() => setActiveSelectionIdentifier("")}
+        value={tabValue}
+        onValueChange={(value) => {
+          setTabValue(value);
+          setActiveSelectionIdentifier("");
+        }}
       >
         <div className="flex items-center justify-between border-b border-gray-300 pt-2">
           <TabsList className="grid w-full translate-y-[6px] grid-cols-4 bg-transparent">
@@ -158,7 +193,21 @@ function RouteComponent() {
                     </div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>[DETAILED INFO GOES HERE]</AccordionContent>
+                <AccordionContent>
+                  <Button
+                    size="sm"
+                    className="rounded-full py-0"
+                    variant="outline"
+                    onClick={() =>
+                      handleDirectionsClick(
+                        event.geometry.coordinates as Position,
+                      )
+                    }
+                  >
+                    <Icons.directions className="size-5 fill-blue-500 group-hover:fill-blue-600" />{" "}
+                    Directions
+                  </Button>
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -185,7 +234,21 @@ function RouteComponent() {
                     <div>{event.properties.title}</div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>[DETAILED INFO GOES HERE]</AccordionContent>
+                <AccordionContent>
+                  <Button
+                    size="sm"
+                    className="rounded-full py-0"
+                    variant="outline"
+                    onClick={() =>
+                      handleDirectionsClick(
+                        event.geometry.coordinates as Position,
+                      )
+                    }
+                  >
+                    <Icons.directions className="size-5 fill-blue-500 group-hover:fill-blue-600" />{" "}
+                    Directions
+                  </Button>
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -234,7 +297,21 @@ function RouteComponent() {
                     </div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent>[DETAILED INFO GOES HERE]</AccordionContent>
+                <AccordionContent>
+                  <Button
+                    size="sm"
+                    className="rounded-full py-0"
+                    variant="outline"
+                    onClick={() =>
+                      handleDirectionsClick(
+                        event.geometry.coordinates as Position,
+                      )
+                    }
+                  >
+                    <Icons.directions className="size-5 fill-blue-500 group-hover:fill-blue-600" />{" "}
+                    Directions
+                  </Button>
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -258,7 +335,7 @@ function RouteComponent() {
               0.6,
               1,
             ],
-            "text-field": ["get", "title"],
+            "text-field": ["get", "englishTitle"],
             "icon-allow-overlap": true,
             "text-font": ["OpenSans"],
             "text-allow-overlap": false,
@@ -293,6 +370,7 @@ function RouteComponent() {
               0.6,
             ],
             "icon-allow-overlap": true,
+            visibility: tabValue === "stalls" ? "visible" : "none",
           }}
         />
       </Source>
@@ -314,9 +392,52 @@ function RouteComponent() {
               0.6,
             ],
             "icon-allow-overlap": true,
+            visibility: tabValue === "parking" ? "visible" : "none",
           }}
         />
       </Source>
+      {routes && (
+        <Source
+          id={`route`}
+          type="geojson"
+          data={{
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates: routes[0].geojson.coordinates,
+            },
+          }}
+        >
+          <Layer
+            id={`route`}
+            type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+            paint={{
+              "line-color": "#cad8eb",
+              "line-width": 1,
+            }}
+            beforeId="Poi-other"
+          />
+          <Layer
+            id={`route-border`}
+            type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+            paint={{
+              "line-color": "#eb5d33",
+              "line-width": 3,
+              "line-dasharray": [2, 3],
+              "line-opacity": 0.3,
+            }}
+          />
+        </Source>
+      )}
     </div>
   );
 }

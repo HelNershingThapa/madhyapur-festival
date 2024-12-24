@@ -8,8 +8,9 @@ export const jatradata = {
         coordinates: [85.3853016245646, 27.67595811876711],
       },
       properties: {
-        title: "Opening ceremony, cultural show and beans exhibition",
-        place: "Balkumari",
+        title: "उदघाटन समारोह र साँस्कृतिक एवम् गेडागुडी प्रदर्शनी",
+        englishTitle: "Opening ceremony, cultural show and beans exhibition",
+        place: "बालकुमारी",
       },
     },
     {
@@ -19,8 +20,9 @@ export const jatradata = {
         coordinates: [85.38563077950535, 27.676390050188857],
       },
       properties: {
-        title: "Buddhist Heritage exhibition and Indra-Apsara Dance",
-        place: "Marutole Lokeshwor Temple Front",
+        title: "बौद्ध सम्पदा प्रदर्शनी तथा भतिमालि (इन्द्र अप्सरा) नाच",
+        englishTitle: "Buddhist Heritage exhibition and Indra-Apsara Dance",
+        place: "मरु टोल",
       },
     },
     {
@@ -30,8 +32,9 @@ export const jatradata = {
         coordinates: [85.38568661256332, 27.6769501629984],
       },
       properties: {
-        title: "Exhibition of Newa Bhway",
-        place: "Dathu Tole Dabu",
+        title: "बिसभन्दा बढी प्रकारका नेवाः भ्वय् प्रदर्शनी",
+        englishTitle: "Exhibition of Newa Bhway",
+        place: "दथु टोल दबु",
       },
     },
     {
@@ -41,9 +44,10 @@ export const jatradata = {
         coordinates: [85.38608135166996, 27.677305373987753],
       },
       properties: {
-        title:
+        title: "पुरातात्विक सम्पदा प्रदर्शनी",
+        englishTitle:
           "Archaeological Heritage and Exhibition of Circulated Coins of Nepal",
-        place: "Thimi Layakoo",
+        place: "थिमि लाय्‌कू",
       },
     },
     {
@@ -53,8 +57,10 @@ export const jatradata = {
         coordinates: [85.38677612278165, 27.67759760064803],
       },
       properties: {
-        title: "Naubaja, Gunlabaja and indigenous technology of alcohol making",
-        place: "Shiva Tole Area",
+        title: "नौबाजा, गुंलाबाजा र अय्लाः बनाउने मौलिक प्रविधि प्रदर्शनी",
+        englishTitle:
+          "Naubaja, Gunlabaja and indigenous technology of alcohol making",
+        place: "शिवा टोल",
       },
     },
     {
@@ -64,8 +70,9 @@ export const jatradata = {
         coordinates: [85.38604272969916, 27.679075559299484],
       },
       properties: {
-        title: "Homemade product and cultural show",
-        place: "Nigoo Pukhu",
+        title: "स्थानीय उत्पादन प्रदर्शनी र साँस्कृतिक कार्यक्रम",
+        englishTitle: "Homemade product and cultural show",
+        place: "निगु पुखु",
       },
     },
     {
@@ -75,8 +82,9 @@ export const jatradata = {
         coordinates: [85.38604272969916, 27.679075559299484],
       },
       properties: {
-        title: "A clay effigy of a tongue piercing and pottery",
-        place: "Digu Tole Area",
+        title: "जिब्रो छेड्ने जात्राको प्रतिमूर्ती तथा मृतिकाकला प्रदर्शनी",
+        englishTitle: "A clay effigy of a tongue piercing and pottery",
+        place: "दिगु टोल",
       },
     },
     {
@@ -86,8 +94,9 @@ export const jatradata = {
         coordinates: [85.38594549683934, 27.679582886395103],
       },
       properties: {
-        title: "Exhibition of Buddhist culture",
-        place: "Digu Baha",
+        title: "बौद्ध संस्कृति प्रदर्शनी",
+        englishTitle: "Exhibition of Buddhist culture",
+        place: "दिगु बाहा",
       },
     },
     {
@@ -97,8 +106,9 @@ export const jatradata = {
         coordinates: [85.38610253871242, 27.679372587401573],
       },
       properties: {
-        title: "Indigenous technology of Handloom",
-        place: "Unknown",
+        title: "घरबुना कपडा बुन्ने मौलिक प्रविधि प्रदर्शनी",
+        englishTitle: "Indigenous technology of Handloom",
+        place: "ताहाननी",
       },
     },
     {
@@ -108,8 +118,9 @@ export const jatradata = {
         coordinates: [85.38707387778564, 27.680131555560276],
       },
       properties: {
-        title: "Dances (Mahakali, Salacha and Pulukisi)",
-        place: "Bhulankhel Area",
+        title: "महाकाली, पुलुकिसि र सलचा प्याख",
+        englishTitle: "Dances (Mahakali, Salacha and Pulukisi)",
+        place: "भुलाँखेल",
       },
     },
     {
@@ -119,8 +130,9 @@ export const jatradata = {
         coordinates: [85.38553011192538, 27.68120946507992],
       },
       properties: {
-        title: "Pottery and live performance of pottery making",
-        place: "Chapacho Area",
+        title: "मृतिकाकला र यस सम्बन्धी मौलिक प्रविधि प्रदर्शनी",
+        englishTitle: "Pottery and live performance of pottery making",
+        place: "चपाचो",
       },
     },
     {
@@ -130,7 +142,8 @@ export const jatradata = {
         coordinates: [85.38664997608613, 27.68190324706109],
       },
       properties: {
-        title: "Photo exhibition of local products and heritages",
+        title: "स्थानीय घरेलु उत्पादन तथा सम्पदाहरूको फोटो प्रदर्शनी",
+        englishTitle: "Photo exhibition of local products and heritages",
         place: "Unknown",
       },
     },
@@ -141,8 +154,9 @@ export const jatradata = {
         coordinates: [85.38853375721725, 27.682220800314333],
       },
       properties: {
-        title: "Exhibition of “Buddha Asthi-Dhatu” and Buddha Biography",
-        place: "Pati Bihar",
+        title: "बुद्ध अस्थिधातु तथा बुद्ध जीवनी प्रदर्शनी",
+        englishTitle: "Exhibition of “Buddha Asthi-Dhatu” and Buddha Biography",
+        place: "पाटी बिहार",
       },
     },
     {
@@ -152,8 +166,9 @@ export const jatradata = {
         coordinates: [85.38824732009813, 27.68306354535957],
       },
       properties: {
-        title: "Mask and mask making",
-        place: "Bahakha",
+        title: "ख्वाःपाः (मुकुण्डो) बनाउने मौलिक प्रविधि प्रदर्शनी",
+        englishTitle: "Mask and mask making",
+        place: "बहाखाबजार",
       },
     },
     {
@@ -163,9 +178,10 @@ export const jatradata = {
         coordinates: [85.38533851503738, 27.684044088057416],
       },
       properties: {
-        title:
+        title: "जात्राको खत, पुलुकिसि र मल्लकालिन मुद्रा प्रदर्शनी",
+        englishTitle:
           "Chariot of Biska Jatra, Pulukisi and exhibition of Medieval coin",
-        place: "Siddhi Ganesh Dyo Chhen",
+        place: "सिद्धिगणेश द्यःछे",
       },
     },
     {
@@ -175,8 +191,9 @@ export const jatradata = {
         coordinates: [85.38433537427572, 27.68416021408155],
       },
       properties: {
-        title: "Dances (Nagacha and Rajkumar)",
-        place: "Siddhi Ganesh Temple",
+        title: "नागचा र राजकुमार नाच प्रदर्शनी",
+        englishTitle: "Dances (Nagacha and Rajkumar)",
+        place: "सिद्धिगणेश मन्दिर",
       },
     },
     {
@@ -186,8 +203,9 @@ export const jatradata = {
         coordinates: [85.38351991787638, 27.684604080602423],
       },
       properties: {
-        title: "Indigenous tools related to farming",
-        place: "Bahanani",
+        title: "कृषि औजार प्रदर्शनी",
+        englishTitle: "Indigenous tools related to farming",
+        place: "बहानानी",
       },
     },
     {
@@ -197,8 +215,10 @@ export const jatradata = {
         coordinates: [85.38533949147413, 27.684422944633887],
       },
       properties: {
-        title: "Dances (Wapijya, Mahakali), cultural show by Tamang community",
-        place: "Kumhalaachi",
+        title: "वापिज्या, महाकाली नाच, भेषभुषा र तामाङ्ग समुदायको प्रदर्शनी",
+        englishTitle:
+          "Dances (Wapijya, Mahakali), cultural show by Tamang community",
+        place: "कुम्हालाछी",
       },
     },
     {
@@ -208,8 +228,9 @@ export const jatradata = {
         coordinates: [85.38635508628911, 27.684729245925123],
       },
       properties: {
-        title: "Commercial Exhibition",
-        place: "Ganesh School",
+        title: "व्यापारिक प्रदर्शनी",
+        englishTitle: "Commercial Exhibition",
+        place: "गणेश विद्यालय",
       },
     },
     {
@@ -219,7 +240,9 @@ export const jatradata = {
         coordinates: [85.38976727094611, 27.6905858486795],
       },
       properties: {
-        title: "Agro-product, Sculpture and exhibition of traditional dresses",
+        title: "कृषि उत्पादन र मूर्तीकला प्रदर्शनी",
+        englishTitle:
+          "Agro-product, Sculpture and exhibition of traditional dresses",
         place: "Unknown",
       },
     },
@@ -230,7 +253,8 @@ export const jatradata = {
         coordinates: [85.3880722253801, 27.69121587166208],
       },
       properties: {
-        title: "Cultural Show",
+        title: "सांस्कृतिक प्रदर्शनी",
+        englishTitle: "Cultural Show",
         place: "Unknown",
       },
     },
@@ -241,8 +265,9 @@ export const jatradata = {
         coordinates: [85.38718643198325, 27.691375034641],
       },
       properties: {
-        title: "Traditional painting and Closing Ceremony",
-        place: "Unknown",
+        title: "चित्रकला र छ्वाली कला प्रदर्शनी",
+        englishTitle: "Traditional painting and Closing Ceremony",
+        place: "लाछीको चोक",
       },
     },
     {
@@ -252,8 +277,11 @@ export const jatradata = {
         coordinates: [85.38685432233197, 27.691756141535933],
       },
       properties: {
-        title: "Chariots of Biska Jatra and a clay effigy of Tongue Piercing",
-        place: "Unknown",
+        title:
+          "बिस्काजात्राको खत र जिब्रो छेड्ने जात्राको प्रतिमूर्ती प्रदर्शनी",
+        englishTitle:
+          "Chariots of Biska Jatra and a clay effigy of Tongue Piercing",
+        place: "बोडे लाय्‌कू",
       },
     },
     {
@@ -263,8 +291,9 @@ export const jatradata = {
         coordinates: [85.3875715915419, 27.69180640698095],
       },
       properties: {
-        title: "Dances (Saya and Nagacha)",
-        place: "Unknown",
+        title: "साँझ्या र नागाचा नाच प्रदर्शनी",
+        englishTitle: "Dances (Saya and Nagacha)",
+        place: "पाँचो",
       },
     },
     {
@@ -274,8 +303,9 @@ export const jatradata = {
         coordinates: [85.38898305119388, 27.691772241011716],
       },
       properties: {
-        title: "Homemade products",
-        place: "Unknown",
+        title: "स्थानीय घरेलु उत्पादन प्रदर्शनी",
+        englishTitle: "Homemade products",
+        place: "खाँसी",
       },
     },
     {
@@ -285,9 +315,10 @@ export const jatradata = {
         coordinates: [85.39660382422653, 27.69422405024937],
       },
       properties: {
-        title:
-          "Tikin Baji (A Traditionally renowned brand of beaten rice), Ghinatngasi Dance and Chariot of Biska Jatra",
-        place: "Unknown",
+        title: "बिस्काजात्रा खत र तिकिंबजि बनाउने मौलिक प्रविधी प्रदर्शनी",
+        englishTitle:
+          "Tikin Baji, Ghinatngasi Dance and Chariot of Biska Jatra",
+        place: "तिगनी",
       },
     },
   ],
