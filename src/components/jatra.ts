@@ -27,7 +27,7 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.38567963531352, 27.67703420348363],
+        coordinates: [85.38568661256332, 27.6769501629984],
       },
       properties: {
         title: "Exhibition of Newa Bhway",
@@ -38,10 +38,11 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.3858980908841, 27.677496175268214],
+        coordinates: [85.38608135166996, 27.677305373987753],
       },
       properties: {
-        title: "Archaeological Heritage",
+        title:
+          "Archaeological Heritage and Exhibition of Circulated Coins of Nepal",
         place: "Thimi Layakoo",
       },
     },
@@ -104,7 +105,7 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.3868451768168, 27.680043026318682],
+        coordinates: [85.38707387778564, 27.680131555560276],
       },
       properties: {
         title: "Dances (Mahakali, Salacha and Pulukisi)",
@@ -140,8 +141,7 @@ export const jatradata = {
         coordinates: [85.38853375721725, 27.682220800314333],
       },
       properties: {
-        title:
-          "Exhibition of \u201cBuddha Asthi-Dhatu\u201d and Buddha Biography",
+        title: "Exhibition of “Buddha Asthi-Dhatu” and Buddha Biography",
         place: "Pati Bihar",
       },
     },
@@ -172,7 +172,7 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.38472613563998, 27.68456025241526],
+        coordinates: [85.38433537427572, 27.68416021408155],
       },
       properties: {
         title: "Dances (Nagacha and Rajkumar)",
@@ -194,22 +194,22 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.38472704128719, 27.684398112158284],
+        coordinates: [85.38533949147413, 27.684422944633887],
       },
       properties: {
         title: "Dances (Wapijya, Mahakali), cultural show by Tamang community",
-        place: "Unknown",
+        place: "Kumhalaachi",
       },
     },
     {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [85.38637586790436, 27.684888561438484],
+        coordinates: [85.38635508628911, 27.684729245925123],
       },
       properties: {
         title: "Commercial Exhibition",
-        place: "Unknown",
+        place: "Ganesh School",
       },
     },
     {
@@ -459,6 +459,312 @@ export const foodStalls = {
       properties: {
         title: "दथुटोल गछें",
         identifier: "YDcCIEVf",
+      },
+    },
+  ],
+};
+
+export const parkings = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38504597488266, 27.67340680337281],
+      },
+      properties: {
+        title: "सचिवालयवाट टिवि अस्पतालको उकालो सम्म",
+        category: "bike",
+        identifier: "Cv8Xk6YT",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38546792763724, 27.671255554024672],
+      },
+      properties: {
+        title: "दक्षिणवाराही जाने पुल देखि पश्चिम तर्फ नयाँ बस्ती जाने वाटो",
+        category: "bike",
+        identifier: "Jk7Zy9QP",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38519515945195, 27.67230166480946],
+      },
+      properties: {
+        title: "शंखधर पार्टी प्यालेस",
+        category: "bike",
+        identifier: "Nf5Mb2WR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3836868111993, 27.672794211819966],
+      },
+      properties: {
+        title: "यचु पार्टी प्यालेस",
+        category: "bike",
+        identifier: "Pq3Xv4LA",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38135865382043, 27.67281321503808],
+      },
+      properties: {
+        title: "थिमि पार्टी प्यालेस",
+        category: "car",
+        identifier: "Bx2Wv8TL",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38319108795326, 27.673858563674866],
+      },
+      properties: {
+        title: "टिवि अस्पताल नयाँ भवन पार्किङ्ग",
+        category: "bike",
+        identifier: "Vz4Tm7QR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38362477237345, 27.674621167811495],
+      },
+      properties: {
+        title: "माकले र युसेप पछाडि",
+        category: "bike",
+        identifier: "Lk9Zx3MV",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38345934843916, 27.67734684438971],
+      },
+      properties: {
+        title: "विष्णु कुण्डल",
+        category: "both",
+        identifier: "Wy5Mb6TX",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38454910560326, 27.67833828272187],
+      },
+      properties: {
+        title: "ईन्द्रायणी मन्दिर मुनी र नव रत्न स्कुल पछाडि",
+        category: "both",
+        identifier: "Yw3Tq7LR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38394540719338, 27.680087714826733],
+      },
+      properties: {
+        title: "सिद्धिकाली खेल मैदान",
+        category: "bike",
+        identifier: "Wb6Xq8TZ",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38346304936837, 27.681030674346935],
+      },
+      properties: {
+        title: "नासनानी जाने उकालो",
+        category: "bike",
+        identifier: "Qx7Xv4TR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38502109203205, 27.682230515308504],
+      },
+      properties: {
+        title: "एक्टिभ ईङ्गलिस स्कुलको पश्चिम तर्फको प्लानिङ्ग",
+        category: "both",
+        identifier: "Ny3Mb6XR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38379982128158, 27.68294765032533],
+      },
+      properties: {
+        title: "शुभश्री पार्टी प्यालेस",
+        category: "bike",
+        identifier: "Kf5Lx9PV",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38452357262705, 27.683104560365866],
+      },
+      properties: {
+        title: "विगमार्ट पछाडिको प्लानिङ्ग",
+        category: "both",
+        identifier: "Zp8Xq7LR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3838615625009, 27.685264867758022],
+      },
+      properties: {
+        title: "महाखेलवाट न्हुहिति जाने ओरालो",
+        category: "bike",
+        identifier: "Tx7Mb4KR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38605761119989, 27.689741778919064],
+      },
+      properties: {
+        title: "सिद्धि गणेश स्विमिङ्गपुल अगाडि",
+        category: "car",
+        identifier: "Rb2Tx9LQ",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38874037866219, 27.68997497801566],
+      },
+      properties: {
+        title: "निलवाराही पार्टी प्यालेस",
+        category: "car",
+        identifier: "Yv4Mx6KQ",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3899985191198, 27.69050789479591],
+      },
+      properties: {
+        title: "खपला पार्किङ्ग",
+        category: "bike",
+        identifier: "Kp3Tq7LY",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.39204369810803, 27.690040450346505],
+      },
+      properties: {
+        title: "सिन्टिटार प्लानिङ्ग भित्रका वाटो",
+        category: "both",
+        identifier: "Wp5Lx8TZ",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38865253720827, 27.68317516914115],
+      },
+      properties: {
+        title: "मध्यपुर बैक्वेट(पुरानो वाटोवाट जाने)",
+        category: "bike",
+        identifier: "Qy3Mv4TX",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38912849232297, 27.683329289600742],
+      },
+      properties: {
+        title: "मध्यपुर बैक्वेट(न.पा.वाटोवाट जाने)",
+        category: "car",
+        identifier: "Ab1Kc8PL",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.39105621119954, 27.680944183432434],
+      },
+      properties: {
+        title: "न्यू एभरेष्ट पार्टी प्यालेस अगाडि र पछाडिको वाटो",
+        category: "bike",
+        identifier: "Cf7Xk9WY",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38937998626992, 27.681088876244175],
+      },
+      properties: {
+        title: "कमेरोटार फुटवल ग्राउण्ड",
+        category: "both",
+        identifier: "Qz8Lt6PV",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.39018625536522, 27.680690599840844],
+      },
+      properties: {
+        title: "कमेरोटार प्लानिङ्गको भित्री वाटो",
+        category: "both",
+        identifier: "Tw5Mn3XR",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38649172059517, 27.683569683165793],
+      },
+      properties: {
+        title: "सिद्धिगणेश मोटर्स",
+        category: "bike",
+        identifier: "Vb3Xk4WY",
       },
     },
   ],

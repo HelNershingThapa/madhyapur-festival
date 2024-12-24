@@ -9,9 +9,10 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import * as turf from "@turf/turf";
 import type { FeatureCollection, Position } from "geojson";
+import { Bike, Car } from "lucide-react";
 import { LngLat } from "maplibre-gl";
 
-import { foodStalls, jatradata } from "@/components/jatra";
+import { foodStalls, jatradata, parkings } from "@/components/jatra";
 import { TypographyH4 } from "@/components/typography";
 import {
   Accordion,
@@ -182,8 +183,54 @@ function RouteComponent() {
                 <AccordionTrigger className="text-left text-sm">
                   <div className="flex flex-col">
                     <div>{event.properties.title}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {event.properties.title}
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>[DETAILED INFO GOES HERE]</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </TabsContent>
+        <TabsContent value="parking">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            onValueChange={(value) => setActiveSelectionIdentifier(value)}
+          >
+            {parkings.features.map((event) => (
+              <AccordionItem
+                value={event.properties.identifier}
+                key={event.properties.identifier}
+                className="px-2"
+                onClick={() => {
+                  setActiveSelectionIdentifier(event.properties.identifier);
+                  flyToCoordinates(event.geometry.coordinates as Position);
+                }}
+              >
+                <AccordionTrigger className="text-left text-sm">
+                  <div className="flex gap-1.5">
+                    {event.properties.category === "bike" && (
+                      <div className="mt-1 flex size-[26px] items-center justify-center rounded-full border-2 border-[#e30811]">
+                        <Bike className="size-4" />
+                      </div>
+                    )}
+                    {event.properties.category === "car" && (
+                      <div className="mt-1 flex size-[26px] items-center justify-center rounded-full border-2 border-[#e30811]">
+                        <Car className="size-4" />
+                      </div>
+                    )}
+                    {event.properties.category === "both" && (
+                      <div className="space-y-0.5">
+                        <div className="flex size-5 items-center justify-center rounded-full border-2 border-[#e30811]">
+                          <Bike className="size-3" />
+                        </div>
+                        <div className="flex size-5 items-center justify-center rounded-full border-2 border-[#e30811]">
+                          <Car className="size-3" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex flex-col">
+                      <div>{event.properties.title}</div>
                     </div>
                   </div>
                 </AccordionTrigger>
@@ -192,7 +239,6 @@ function RouteComponent() {
             ))}
           </Accordion>
         </TabsContent>
-        <TabsContent value="parking">COMING SOON...</TabsContent>
         <TabsContent value="toilet">COMING SOON...</TabsContent>
       </Tabs>
       <Source id="venues" type="geojson" data={jatradata}>
@@ -239,6 +285,27 @@ function RouteComponent() {
               ["==", ["get", "identifier"], activeSelectionIdentifier],
               "selected-marker",
               "stall-marker",
+            ],
+            "icon-size": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              0.6,
+              0.6,
+            ],
+            "icon-allow-overlap": true,
+          }}
+        />
+      </Source>
+      <Source id="parking" type="geojson" data={parkings}>
+        <Layer
+          id="parking"
+          type="symbol"
+          layout={{
+            "icon-image": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              "selected-marker",
+              "parking-marker",
             ],
             "icon-size": [
               "case",
