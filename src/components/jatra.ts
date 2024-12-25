@@ -144,7 +144,7 @@ export const jatradata = {
       properties: {
         title: "स्थानीय घरेलु उत्पादन तथा सम्पदाहरूको फोटो प्रदर्शनी",
         englishTitle: "Photo exhibition of local products and heritages",
-        place: "Unknown",
+        place: "निगु पुखु",
       },
     },
     {
@@ -366,7 +366,7 @@ export const jatradata = {
       properties: {
         title: "जिप लाइन",
         englishTitle: "Zip Line",
-        place: "Unknown",
+        place: "दुनेग",
       },
     },
     {
@@ -497,7 +497,7 @@ export const foodStalls = {
         coordinates: [85.38658170097295, 27.679244295747864],
       },
       properties: {
-        title: "",
+        title: "लाय्‌कू चोक",
         identifier: "aBc123Xy",
       },
     },
@@ -926,6 +926,166 @@ export const parkings = {
         title: "सिद्धिगणेश मोटर्स",
         category: "bike",
         identifier: "Vb3Xk4WY",
+      },
+    },
+  ],
+};
+
+export const toilets = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.385267, 27.675916],
+      },
+      properties: {
+        title: "Ward 4, Balkumari",
+        identifier: "Ward4-Balkumari",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.387025, 27.680275],
+      },
+      properties: {
+        title: "Ward 5, Chapacho",
+        identifier: "Ward5-Chapacho",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38606896854814, 27.683505184629368],
+      },
+      properties: {
+        title: "Ward 7, Nagadesh",
+        identifier: "Ward7-Nagadesh",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38787772877888, 27.692439852398895],
+      },
+      properties: {
+        title: "Ward 8, Bode",
+        identifier: "Ward8-Bode",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38481069822124, 27.67342429034809],
+      },
+      properties: {
+        title: "Public Toilet",
+        identifier: "PublicToilet",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38534034953273, 27.681964047501197],
+      },
+      properties: {
+        title: "Active English School",
+        identifier: "ActiveEnglishSchool",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38513259209071, 27.678472824595673],
+      },
+      properties: {
+        title: "Nawaratna School",
+        identifier: "NawaratnaSchool",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38532106893916, 27.67490520519327],
+      },
+      properties: {
+        title: "Jana Adarsha Campus",
+        identifier: "JanaAdarshaCampus",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38635508628911, 27.684729245925123],
+      },
+      properties: {
+        title: "Ganesh School",
+        identifier: "GaneshSchool",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.39669240433192, 27.694539529724224],
+      },
+      properties: {
+        title: "Nil Barahi Pra V",
+        identifier: "NilBarahiPraV",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38371989012978, 27.68042916314144],
+      },
+      properties: {
+        title: "Manab Vidya Griha",
+        identifier: "ManabVidyaGriha",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.29756619585712, 27.707058155702377],
+      },
+      properties: {
+        title: "Aastha Mahila Vidhyalaya",
+        identifier: "AasthaMahilaVidhyalaya",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38345092247867, 27.67602852675011],
+      },
+      properties: {
+        title: "Balpremi School",
+        identifier: "BalpremiSchool",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38288253154329, 27.680820731702223],
+      },
+      properties: {
+        title: "Janak Siddhikali School",
+        identifier: "JanakSiddhikaliSchool",
       },
     },
   ],

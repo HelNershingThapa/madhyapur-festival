@@ -14,7 +14,7 @@ import { Bike, Car } from "lucide-react";
 import { LngLat } from "maplibre-gl";
 
 import { Icons } from "@/components/icons";
-import { foodStalls, jatradata, parkings } from "@/components/jatra";
+import { foodStalls, jatradata, parkings, toilets } from "@/components/jatra";
 import { TypographyH4 } from "@/components/typography";
 import {
   Accordion,
@@ -93,10 +93,10 @@ function RouteComponent() {
       value: "parking",
       label: "Parking",
     },
-    // {
-    //   value: "toilet",
-    //   label: "Toilet",
-    // },
+    {
+      value: "toilet",
+      label: "Toilet",
+    },
   ];
 
   const flyToCoordinates = (coordinates: Position) => {
@@ -157,7 +157,7 @@ function RouteComponent() {
         }}
       >
         <div className="flex items-center justify-between border-b border-gray-300 pt-2">
-          <TabsList className="grid w-full translate-y-[6px] grid-cols-3 bg-transparent">
+          <TabsList className="grid w-full translate-y-[6px] grid-cols-4 bg-transparent">
             {tabList.map((tabOption) => (
               <TabsTrigger
                 key={tabOption.value}
@@ -319,7 +319,47 @@ function RouteComponent() {
             ))}
           </Accordion>
         </TabsContent>
-        <TabsContent value="toilet">COMING SOON...</TabsContent>
+        <TabsContent value="toilet">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            onValueChange={(value) => setActiveSelectionIdentifier(value)}
+          >
+            {toilets.features.map((event) => (
+              <AccordionItem
+                value={event.properties.identifier}
+                key={event.properties.identifier}
+                className="px-2"
+                onClick={() => {
+                  setActiveSelectionIdentifier(event.properties.identifier);
+                  flyToCoordinates(event.geometry.coordinates as Position);
+                }}
+              >
+                <AccordionTrigger className="text-left text-sm">
+                  <div className="flex flex-col">
+                    <div>{event.properties.title}</div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Button
+                    size="sm"
+                    className="rounded-full py-0"
+                    variant="outline"
+                    onClick={() =>
+                      handleDirectionsClick(
+                        event.geometry.coordinates as Position,
+                      )
+                    }
+                  >
+                    <Icons.directions className="size-5 fill-blue-500 group-hover:fill-blue-600" />{" "}
+                    Directions
+                  </Button>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </TabsContent>
       </Tabs>
       <Source id="venues" type="geojson" data={jatradata}>
         <Layer
@@ -396,6 +436,28 @@ function RouteComponent() {
             ],
             "icon-allow-overlap": true,
             visibility: tabValue === "parking" ? "visible" : "none",
+          }}
+        />
+      </Source>
+      <Source id="toilet" type="geojson" data={toilets}>
+        <Layer
+          id="toilet"
+          type="symbol"
+          layout={{
+            "icon-image": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              "selected-marker",
+              "toilet-marker",
+            ],
+            "icon-size": [
+              "case",
+              ["==", ["get", "identifier"], activeSelectionIdentifier],
+              0.6,
+              0.6,
+            ],
+            "icon-allow-overlap": true,
+            visibility: tabValue === "toilet" ? "visible" : "none",
           }}
         />
       </Source>
