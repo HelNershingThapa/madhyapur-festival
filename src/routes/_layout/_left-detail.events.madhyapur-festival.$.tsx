@@ -93,10 +93,10 @@ function RouteComponent() {
       value: "parking",
       label: "Parking",
     },
-    {
-      value: "toilet",
-      label: "Toilet",
-    },
+    // {
+    //   value: "toilet",
+    //   label: "Toilet",
+    // },
   ];
 
   const flyToCoordinates = (coordinates: Position) => {
@@ -157,7 +157,7 @@ function RouteComponent() {
         }}
       >
         <div className="flex items-center justify-between border-b border-gray-300 pt-2">
-          <TabsList className="grid w-full translate-y-[6px] grid-cols-4 bg-transparent">
+          <TabsList className="grid w-full translate-y-[6px] grid-cols-3 bg-transparent">
             {tabList.map((tabOption) => (
               <TabsTrigger
                 key={tabOption.value}
@@ -231,7 +231,10 @@ function RouteComponent() {
               >
                 <AccordionTrigger className="text-left text-sm">
                   <div className="flex flex-col">
-                    <div>{event.properties.title}</div>
+                    <div>नेवारी परिकार स्टल</div>
+                    <div className="text-muted-foreground">
+                      {event.properties.title}
+                    </div>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>

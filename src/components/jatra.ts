@@ -9,7 +9,8 @@ export const jatradata = {
       },
       properties: {
         title: "उदघाटन समारोह र साँस्कृतिक एवम् गेडागुडी प्रदर्शनी",
-        englishTitle: "Opening ceremony, cultural show and beans exhibition",
+        englishTitle:
+          "Opening Ceremony and Cultural Show with Beans Exhibition",
         place: "बालकुमारी",
       },
     },
@@ -21,7 +22,7 @@ export const jatradata = {
       },
       properties: {
         title: "बौद्ध सम्पदा प्रदर्शनी तथा भतिमालि (इन्द्र अप्सरा) नाच",
-        englishTitle: "Buddhist Heritage exhibition and Indra-Apsara Dance",
+        englishTitle: "Buddhist Heritage Exhibition and Indra-Apsara Dance",
         place: "मरु टोल",
       },
     },
@@ -44,9 +45,8 @@ export const jatradata = {
         coordinates: [85.38608135166996, 27.677305373987753],
       },
       properties: {
-        title: "पुरातात्विक सम्पदा प्रदर्शनी",
-        englishTitle:
-          "Archaeological Heritage and Exhibition of Circulated Coins of Nepal",
+        title: "पुरातात्विक सम्पदा प्रदर्शनी, प्रचलित मुद्रा प्रदर्शनी",
+        englishTitle: "Archaeological Heritage and Circulated Coins Exhibition",
         place: "थिमि लाय्‌कू",
       },
     },
@@ -312,6 +312,18 @@ export const jatradata = {
       type: "Feature",
       geometry: {
         type: "Point",
+        coordinates: [85.38822688925676, 27.692256372182452],
+      },
+      properties: {
+        title: "ब्रतबन्ध प्रदर्शनी",
+        englishTitle: "Bratabandha exhibition",
+        place: "महालक्ष्मी मन्दिर",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
         coordinates: [85.39660382422653, 27.69422405024937],
       },
       properties: {
@@ -319,6 +331,102 @@ export const jatradata = {
         englishTitle:
           "Tikin Baji, Ghinatngasi Dance and Chariot of Biska Jatra",
         place: "तिगनी",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3857938419236, 27.68149714204131],
+      },
+      properties: {
+        title: "आखु छे - साँस्कृतिक संग्रहालय",
+        englishTitle: "Aakhu Che - Cultural Museum",
+        place: "दइनन",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38371989012978, 27.68042916314144],
+      },
+      properties: {
+        title: "किरात मुन्धुम प्रदर्शनी",
+        englishTitle: "Kirat Mundhum Exhibition",
+        place: "मानव तिवद्यः गेह",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38306265067858, 27.674239437080786],
+      },
+      properties: {
+        title: "जिप लाइन",
+        englishTitle: "Zip Line",
+        place: "Unknown",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38589077320444, 27.67938570000115],
+      },
+      properties: {
+        title: "भैल प्रदर्शनी",
+        englishTitle: "Bhal Exhibition",
+        place: "हनन",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38569525046398, 27.68459200989122],
+      },
+      properties: {
+        title: "Talkshow",
+        englishTitle: "Talkshow",
+        place: "म्हलछे",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3833192371975, 27.685077929739933],
+      },
+      properties: {
+        title: "बौद्ध अभ्यास प्रदर्शनी",
+        englishTitle: "Buddhist Practice Exhibition",
+        place: "माहख्य",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38530631402136, 27.684911400312714],
+      },
+      properties: {
+        title: "हरियो तरकारी प्रदर्शनी र तरकारीले सजाइएको प्रवेशद्वार",
+        englishTitle: "Green Vegetable Display and Entrance",
+        place: "वगे",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.3866238683861, 27.691501601738537],
+      },
+      properties: {
+        title: "साँस्कृतिक क्रियाकलाप र समापन समारोह",
+        englishTitle: "Cultural Activities and Closing Ceremony",
+        place: "Kamalpokha",
       },
     },
   ],
@@ -380,6 +488,28 @@ export const foodStalls = {
       properties: {
         title: "द्योबु",
         identifier: "hm7496Vr",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38658170097295, 27.679244295747864],
+      },
+      properties: {
+        title: "",
+        identifier: "aBc123Xy",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [85.38562333968201, 27.677137942853847],
+      },
+      properties: {
+        title: "ताहननी",
+        identifier: "bCv123Xy",
       },
     },
     {
