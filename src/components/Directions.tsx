@@ -16,15 +16,16 @@ import { uid } from "react-uid";
 
 import Polyline from "@mapbox/polyline";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { featureCollection, nearestPointOnLine } from "@turf/turf";
 import * as turf from "@turf/turf";
+import type { Position } from "geojson";
 import _ from "lodash";
 import { Bike, BusFront, CarFront, Footprints, Loader2, X } from "lucide-react";
 
 import DirectionsForm from "@/components/DirectionsForm";
 import { Icon } from "@/components/icons";
-import { DirectionMarker } from "@/components/markers";
+import { DirectionMarker, PoiMarker } from "@/components/markers";
 import { RouteDetails } from "@/components/RouteDetails";
 import RoutingInstructions from "@/components/RoutingInstructions";
 import TransitDetails from "@/components/TransitDetails";
@@ -75,11 +76,43 @@ const modeOfTravels = [
   },
 ] as { value: DirectionsMode; tooltipTitle: string; icon: Icon }[];
 
+const calculateInitialRoutingPoints = (
+  locationParams: string,
+  userLocation: Position | null,
+): RoutingPoint[] => {
+  const locations = _.chunk(locationParams.split(",").map(Number), 2);
+  let userLocationSet = false;
+
+  return locations.map((location) => {
+    const [lat, lng] = location;
+
+    if (lat !== 0 || lng !== 0) {
+      return {
+        query: `${lat},${lng}`,
+        coordinates: [lng, lat],
+      };
+    }
+
+    // User location should be set only once
+    if (userLocation && !userLocationSet) {
+      userLocationSet = true;
+      return {
+        query: "Your Location",
+        coordinates: userLocation,
+      };
+    }
+
+    return {
+      query: "",
+      coordinates: null,
+    };
+  });
+};
+
 const Directions = () => {
   const { current: map } = useMap();
   const state = useStateContext();
   const dispatch = useStateDispatchContext();
-  const routerLocation = useLocation();
 
   const navigate = useNavigate();
   const params = useParams({ from: "/_layout/directions/$locations/$mode/$" });
@@ -87,6 +120,8 @@ const Directions = () => {
     () => new BaatoService(import.meta.env.VITE_BAATO_API_URL),
     [],
   );
+  const [focussedInputIndex, setFocussedInputIndex] = useState<number>(-1);
+
   // initializers
   const [activeRouteIndex, setActiveRouteIndex] = useState<number>(-1);
   const [activeTransitRouteIndex, setActiveTransitRouteIndex] =
@@ -99,19 +134,15 @@ const Directions = () => {
   );
   const [showInstructions, setShowInstructions] = useState(false);
   const [showTransitInstructions, setShowTransitInstructions] = useState(false);
-  const [focussedListItemIndex, setFocussedListItemIndex] = useState(-1);
   const isTransitMode = modeOfTravel === "transit";
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
-  const [routingPoints, setRoutingPoints] = useState<RoutingPoint[]>([
-    {
-      query: "",
-      coordinates: null,
-    },
-    {
-      query: "",
-      coordinates: null,
-    },
-  ]);
+
+  const { userLocation } = state;
+
+  const [routingPoints, setRoutingPoints] = useState<RoutingPoint[]>(
+    calculateInitialRoutingPoints(params.locations, userLocation),
+  );
+
   const boundsPadding = useMemo(() => {
     return !isSmallScreen
       ? {
@@ -132,15 +163,12 @@ const Directions = () => {
         };
   }, [isSmallScreen]);
 
-  const { userLocation, currentMarkers, focussed } = state;
-
   const { isLoading: isTransitInstructionsLoading, data: transitInstructions } =
     useQuery({
       queryKey: ["transit-instructions", params.locations],
       queryFn: async () => await baatoService.transit(routingPoints),
       enabled:
-        isTransitMode &&
-        routingPoints.filter((e) => e.coordinates && e.coordinates).length > 1,
+        isTransitMode && routingPoints.filter((e) => e.coordinates).length > 1,
     });
 
   const { isLoading: isDirectionsLoading, data: routes } = useQuery({
@@ -148,55 +176,23 @@ const Directions = () => {
     queryFn: async () =>
       await baatoService.routing(routingPoints, modeOfTravel),
     enabled:
-      !isTransitMode &&
-      routingPoints.filter((e) => e.coordinates && e.coordinates).length > 1,
+      !isTransitMode && routingPoints.filter((e) => e.coordinates).length > 1,
   });
 
   useEffect(() => {
-    const { locations } = params;
-    // had to introduce 'notFromUrl' state because query were messed up
-    // did this to only run this piece of code on fresh refresh and not on mount
-
-    if (locations && locations !== "empty") {
-      const locs = _.chunk(locations.split(",").map(Number), 2);
-      const tempPoints = [...routingPoints];
-      locs.forEach((loc, index) => {
-        if (loc.toString() !== [0, 0].toString()) {
-          tempPoints[index] = {
-            query: `${loc[0]},${loc[1]}`,
-            coordinates: [loc[1], loc[0]],
-          };
-        } else {
-          tempPoints[index] = {
-            query: "",
-            coordinates: null,
-          };
-        }
-      });
-      setRoutingPoints(tempPoints);
-      // Handle scenario where only the destination is set
-      if (locs.length === 1 && locs[0].toString() !== [0, 0].toString()) {
-        tempPoints[0] = {
-          query: "", // Leave the starting point empty
-          coordinates: null,
-        };
-        tempPoints[1] = {
-          query: `${locs[0][0]},${locs[0][1]}`,
-          coordinates: [locs[0][1], locs[0][0]],
-        };
+    const tempPoints = [...routingPoints];
+    // Perform reverse geocoding for any non-empty points
+    tempPoints.forEach(async (tempPoint, index) => {
+      if (tempPoint.coordinates && tempPoint.query !== "Your Location") {
+        const res = await baatoService.reverseGeocode([
+          tempPoint.coordinates[1],
+          tempPoint.coordinates[0],
+        ]);
+        tempPoints[index].query = res.data[0].name;
       }
-      setRoutingPoints(tempPoints);
-      // Perform reverse geocoding for any non-empty points
-      locs.forEach(async (loc, index) => {
-        if (loc.toString() !== [0, 0].toString()) {
-          const res = await baatoService.reverseGeocode([loc[0], loc[1]]);
-          tempPoints[index].query = res.data[0].name;
-        }
-      });
-      setRoutingPoints(tempPoints);
-      navigateToRoutingPoints();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    setRoutingPoints(tempPoints);
+    navigateToRoutingPoints();
   }, []);
 
   const navigateToRoutingPoints = useCallback(() => {
@@ -206,7 +202,7 @@ const Directions = () => {
     navigate({
       to: "/directions/$locations/$mode/$",
       params: {
-        locations: definedParsedPoints || "empty",
+        locations: definedParsedPoints,
         mode: modeOfTravel,
         _splat: params._splat,
       },
@@ -237,7 +233,7 @@ const Directions = () => {
       tempPoints[firstEmptyPointIndex]["coordinates"] = [lng, lat];
       setRoutingPoints(tempPoints);
       navigateToRoutingPoints();
-      return;
+      // return;
     };
 
     map?.on("click", handleMapClick);
@@ -246,18 +242,6 @@ const Directions = () => {
       map?.off("click", handleMapClick);
     };
   }, [baatoService, dispatch, map, navigateToRoutingPoints, routingPoints]);
-
-  useEffect(() => {
-    navigate({
-      to: "/directions/$locations/$mode/$",
-      params: {
-        locations: params.locations,
-        mode: modeOfTravel,
-        _splat: params._splat,
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modeOfTravel]);
 
   useEffect(() => {
     if (transitInstructions) {
@@ -370,42 +354,35 @@ const Directions = () => {
     });
   }, [navigate, params._splat, setOriginToUserLocation, userLocation]);
 
-  const removeMarkerForDirections = (markerIndex: number) => {
-    const newCurrentMarkers = [...currentMarkers];
-    if (newCurrentMarkers[markerIndex]) {
-      newCurrentMarkers[markerIndex].remove();
-    }
-    newCurrentMarkers.splice(markerIndex, 1);
-    dispatch({
-      type: "update_state",
-      payload: {
-        currentMarkers: newCurrentMarkers,
-      },
-    });
-  };
-
   function onDragStart(markerIndex: number) {
-    dispatch({
-      type: "update_state",
-      payload: {
-        focussed: markerIndex,
-      },
-    });
+    setFocussedInputIndex(markerIndex);
   }
 
   async function onDragEnd({ lngLat }: MarkerDragEvent) {
     const newPoints = [...routingPoints];
-    newPoints[focussed]["query"] = `${lngLat.lat.toFixed(
+    newPoints[focussedInputIndex]["query"] = `${lngLat.lat.toFixed(
       4,
     )}, ${lngLat.lng.toFixed(4)}`;
     setRoutingPoints(newPoints);
-    const res = await baatoService.reverseGeocode([lngLat.lat, lngLat.lng]);
     const tempPoints = [...routingPoints];
-    tempPoints[focussed]["query"] = res.data[0].name;
-    tempPoints[focussed]["coordinates"] = [lngLat.lng, lngLat.lat];
+    const res = await baatoService.reverseGeocode([lngLat.lat, lngLat.lng]);
+    tempPoints[focussedInputIndex]["query"] = res.data[0].name;
+    tempPoints[focussedInputIndex]["coordinates"] = [lngLat.lng, lngLat.lat];
     setRoutingPoints(tempPoints);
     navigateToRoutingPoints();
   }
+
+  const handleModeOfTravelChange = (mode: DirectionsMode) => {
+    setModeOfTravel(mode);
+    navigate({
+      to: "/directions/$locations/$mode/$",
+      params: {
+        locations: params.locations,
+        mode: modeOfTravel,
+        _splat: params._splat,
+      },
+    });
+  };
 
   return (
     <div className="fixed bottom-auto left-0 top-0 z-[15] h-auto w-[min(428px,100vw)] overflow-y-auto bg-white pt-2.5 md:bottom-0 md:h-screen">
@@ -441,12 +418,25 @@ const Directions = () => {
       {routingPoints.map((point, index) => (
         <Fragment key={uid(point, index)}>
           {point.coordinates != null && (
-            <DirectionMarker
-              lat={point.coordinates[1]}
-              lng={point.coordinates[0]}
-              onDragStart={() => onDragStart(index)}
-              onDragEnd={onDragEnd}
-            />
+            <>
+              {/* Display POI marker for destination */}
+              {index !== routingPoints.length - 1 ? (
+                <DirectionMarker
+                  lat={point.coordinates[1]}
+                  lng={point.coordinates[0]}
+                  onDragStart={() => onDragStart(index)}
+                  onDragEnd={onDragEnd}
+                />
+              ) : (
+                <PoiMarker
+                  draggable
+                  latitude={point.coordinates[1]}
+                  longitude={point.coordinates[0]}
+                  onDragStart={() => onDragStart(index)}
+                  onDragEnd={onDragEnd}
+                />
+              )}
+            </>
           )}
         </Fragment>
       ))}
@@ -598,7 +588,7 @@ const Directions = () => {
                           "bg-blue-100 text-blue-500 hover:bg-blue-100 hover:text-blue-500",
                       )}
                       aria-label="set mode of travel for directions"
-                      onClick={() => setModeOfTravel(mode.value)}
+                      onClick={() => handleModeOfTravelChange(mode.value)}
                     >
                       <mode.icon className="size-6" />
                     </Button>
@@ -638,6 +628,8 @@ const Directions = () => {
           routingPoints={routingPoints}
           setRoutingPoints={setRoutingPoints}
           navigateToRoutingPoints={navigateToRoutingPoints}
+          focussedInputIndex={focussedInputIndex}
+          setFocussedInputIndex={setFocussedInputIndex}
         />
         <Separator />
         {!isTransitMode && !isSmallScreen && routes && (

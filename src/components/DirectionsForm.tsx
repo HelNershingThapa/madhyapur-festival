@@ -16,13 +16,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useStateContext, useStateDispatchContext } from "@/StateContext";
 import type { RoutingPoint } from "@/types/miscellaneous";
 import { SearchPlace } from "@/types/place";
 import BaatoService from "@/utils/baatoService";
 
 // a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
+const reorder = (
+  list: RoutingPoint[],
+  startIndex: number,
+  endIndex: number,
+) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -37,6 +40,8 @@ type DirectionsFormProps = {
   setSearchResults: React.Dispatch<React.SetStateAction<SearchPlace[] | null>>;
   searchResults: SearchPlace[] | null;
   navigateToRoutingPoints: () => void;
+  focussedInputIndex: number;
+  setFocussedInputIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function DirectionsForm({
@@ -46,12 +51,11 @@ function DirectionsForm({
   routingPoints,
   setRoutingPoints,
   navigateToRoutingPoints,
+  focussedInputIndex,
+  setFocussedInputIndex,
 }: DirectionsFormProps) {
-  const state = useStateContext();
-  const dispatch = useStateDispatchContext();
   const myRefs = useRef<HTMLInputElement[]>([]);
   const baatoService = new BaatoService(import.meta.env.VITE_BAATO_API_URL);
-  const { currentMarkers, focussed } = state;
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -64,19 +68,7 @@ function DirectionsForm({
       result.source.index,
       result.destination.index,
     );
-    const newMarkers = reorder(
-      currentMarkers,
-      result.source.index,
-      result.destination.index,
-    );
     setRoutingPoints(newItems);
-    dispatch({
-      type: "waypoints_order_changed",
-      payload: {
-        newRoutingPoints: newItems,
-        newCurrentMarkers: newMarkers,
-      },
-    });
   };
 
   const getItemStyle = (draggableStyle) => ({
@@ -110,9 +102,12 @@ function DirectionsForm({
 
   const handleSearchResultSelect = async (result: SearchPlace) => {
     const newPoints = [...routingPoints];
-    newPoints[focussed]["query"] = result.name;
+    newPoints[focussedInputIndex]["query"] = result.name;
     const res = await baatoService.places(result.placeId);
-    newPoints[focussed]["coordinates"] = [res.centroid.lon, res.centroid.lat];
+    newPoints[focussedInputIndex]["coordinates"] = [
+      res.centroid.lon,
+      res.centroid.lat,
+    ];
     setRoutingPoints(newPoints);
     navigateToRoutingPoints();
   };
@@ -187,29 +182,15 @@ function DirectionsForm({
                                       : ""
                                   }`
                             }`}
-                            onFocus={() =>
-                              dispatch({
-                                type: "focussed_changed",
-                                payload: {
-                                  newIndex: index,
-                                },
-                              })
-                            }
-                            onBlur={() =>
-                              dispatch({
-                                type: "focussed_changed",
-                                payload: {
-                                  newIndex: null,
-                                },
-                              })
-                            }
+                            onFocus={() => setFocussedInputIndex(index)}
+                            onBlur={() => setFocussedInputIndex(-1)}
                             value={routingPoint.query}
                             onValueChange={(query) =>
                               handleQueryChange(query, index)
                             }
                           />
                           <CommandList
-                            hidden={focussed !== index}
+                            hidden={focussedInputIndex !== index}
                             className="py-2"
                           >
                             {searchResults?.map((result) => (

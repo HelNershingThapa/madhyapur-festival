@@ -23,15 +23,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { auth } from "@/firebase-config";
+import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { cn } from "@/lib/utils";
 import { StateContext, StateDispatchContext } from "@/StateContext";
 import { SearchPlace } from "@/types/place";
 import BaatoService from "@/utils/baatoService";
+import { isGeohash, isPosition } from "@/utils/miscellaneous";
 
 // TODO - some implementation using usemediaquery to toggle drawer
 
 export function Search() {
   const { current: map } = useMap();
+  const commandRef = React.useRef<HTMLDivElement>(null);
   const inputBaseRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const baatoService = new BaatoService(import.meta.env.VITE_BAATO_API_URL);
@@ -41,11 +44,9 @@ export function Search() {
   const [focussed, setFocussed] = React.useState(false);
   const {
     searchQuery,
-    isInputBaseLoading,
     nearbyLoading,
     isClearSearchShown,
     isContributionsLoading,
-    routingPoints,
     selectedFeature,
   } = state;
 
@@ -58,21 +59,17 @@ export function Search() {
   });
 
   const initialDirectionsNavigate = React.useCallback(() => {
-    let latLng = routingPoints.map((a) => a.value?.centroid);
-    const parsedPoints = latLng.map((a) => a && `${a?.lat},${a?.lon}`);
-    const definedParsedPoints = parsedPoints.filter((a) => a).join(",");
     navigate({
       to: "/directions/$locations/$mode/$",
       params: {
-        locations: definedParsedPoints || "empty",
+        locations: ",,,",
         mode: "foot",
         _splat: params._splat,
       },
-      state: {
-        notFromUrl: true,
-      },
     });
-  }, [navigate, params, routingPoints]);
+  }, [navigate, params]);
+
+  useOnClickOutside(commandRef, () => setFocussed(false));
 
   const removeFeatureFilter = () => {
     if (selectedFeature === null) return;
@@ -124,6 +121,7 @@ export function Search() {
   };
 
   const onSearchResultSelect = async (result: SearchPlace) => {
+    setFocussed(false);
     let recentSearches = JSON.parse(localStorage.getItem("recent")) || [];
     if (recentSearches.some((e) => e.placeId === result.placeId)) {
       recentSearches = recentSearches.filter(
@@ -144,12 +142,6 @@ export function Search() {
 
   const handleInputChange = (search: string) => {
     setQuery(search);
-    if (search === "") {
-      dispatch({
-        type: "search_query_cleared",
-      });
-      return;
-    }
     dispatch({
       type: "update_state",
       payload: {
@@ -162,6 +154,7 @@ export function Search() {
     dispatch({
       type: "search_results_cleared",
     });
+    setQuery("");
     removeFeatureFilter();
     inputBaseRef.current?.focus();
     navigate({
@@ -242,20 +235,24 @@ export function Search() {
       });
       return;
     }
-    dispatch({
-      type: "update_state",
-      payload: {
-        isAddMissingDialogOpen: true,
-      },
+    navigate({
+      to: "/add-place/$",
     });
   };
+
+  const isQueryCoordinates = isPosition(query);
+  const isQueryGeohash = isGeohash(query);
 
   return (
     <div
       className="relative"
       style={{ width: "min(410px, calc(100vw - 12px))" }}
     >
-      <Command className="absolute h-max shadow-xl" shouldFilter={false}>
+      <Command
+        ref={commandRef}
+        className="absolute h-max origin-top shadow-xl"
+        shouldFilter={false}
+      >
         <div className="relative">
           <CommandInput
             ref={inputBaseRef}
@@ -264,7 +261,7 @@ export function Search() {
             value={searchQuery || ""}
             onValueChange={handleInputChange}
             onFocus={() => setFocussed(true)}
-            onBlur={() => setFocussed(false)}
+            // onBlur={() => setFocussed(false)}
           />
           <div className="absolute left-1 top-0.5">
             <Button
@@ -283,7 +280,7 @@ export function Search() {
             {renderActionButton()}
           </div>
         </div>
-        <CommandList className={cn("py-2", !focussed && "hidden")}>
+        <CommandList className={cn("z-[10] py-2", !focussed && "hidden")}>
           {searchQuery && searchResults?.length === 0 && (
             <CommandEmpty
               onClick={handleAddMissingPlaceClick}
@@ -293,27 +290,67 @@ export function Search() {
               Add a missing place
             </CommandEmpty>
           )}
-          {listItems?.map((result) => (
+          {/* unrelated results are from search are shown with geohash as query
+           so displaying the option item on the very top */}
+          {isQueryGeohash && (
             <CommandItem
-              key={uid(result)}
               className="flex gap-4 py-2.5 pl-3"
-              onSelect={() => onSearchResultSelect(result)}
+              onSelect={() => {
+                setFocussed(false);
+                navigate({
+                  to: "/places/$placeId",
+                  params: {
+                    placeId: query,
+                  },
+                });
+              }}
             >
-              {!searchQuery ? (
-                <Clock4 className="size-5" />
-              ) : result.type === "administrative" ? (
-                <Icons.borderInner className="size-5" />
-              ) : (
-                <MapPin className="size-5" />
-              )}
-              <div>
-                <span>{result.name}</span>
-                <span className="text-muted-foreground">
-                  &nbsp;{result.address}
-                </span>
-              </div>
+              <MapPin className="size-5" />
+              <span className="font-medium">{query}</span>
             </CommandItem>
-          ))}
+          )}
+          {listItems?.map((result) => {
+            let Icon;
+            if (!searchQuery) {
+              Icon = Clock4;
+            } else if (result.type === "administrative") {
+              Icon = Icons.borderInner;
+            } else {
+              Icon = MapPin;
+            }
+            return (
+              <CommandItem
+                key={uid(result)}
+                className="flex gap-4 py-2.5 pl-3"
+                onSelect={() => onSearchResultSelect(result)}
+              >
+                <Icon className="size-5" />
+                <div>
+                  <span>{result.name}</span>
+                  <span className="text-muted-foreground">
+                    &nbsp;{result.address}
+                  </span>
+                </div>
+              </CommandItem>
+            );
+          })}
+          {isQueryCoordinates && (
+            <CommandItem
+              className="flex gap-4 py-2.5 pl-3"
+              onSelect={() => {
+                setFocussed(false);
+                navigate({
+                  to: "/places/$placeId",
+                  params: {
+                    placeId: query,
+                  },
+                });
+              }}
+            >
+              <MapPin className="size-5" />
+              <span className="font-medium">{query.replace(/,/g, "")}</span>
+            </CommandItem>
+          )}
         </CommandList>
       </Command>
       <AppDrawer

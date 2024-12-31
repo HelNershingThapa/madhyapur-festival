@@ -8,6 +8,7 @@ import MaplibreMap, {
   NavigationControl,
   Popup,
   type PopupEvent,
+  ScaleControl,
 } from "react-map-gl/maplibre";
 
 import { DrawDeleteEvent, DrawUpdateEvent } from "@mapbox/mapbox-gl-draw";
@@ -289,6 +290,15 @@ export function RootMap({ children }: { children: React.ReactNode }) {
                 originalColor,
               ]);
           });
+          // Display user location circle but don't move the map there
+          if (geoControlRef.current) {
+            const updateCamera = geoControlRef.current._updateCamera;
+            geoControlRef.current._updateCamera = function () {};
+            geoControlRef.current.once("geolocate", () => {
+              geoControlRef.current._updateCamera = updateCamera;
+            });
+            geoControlRef.current.trigger();
+          }
         }}
         onMouseEnter={(e: maplibregl.MapLayerMouseEvent) => {
           const feature = e.features[0];
@@ -347,6 +357,7 @@ export function RootMap({ children }: { children: React.ReactNode }) {
           }
         }}
       >
+        <ScaleControl position="bottom-right" />
         <DrawControl
           ref={drawRef}
           position="bottom-right"
@@ -363,16 +374,16 @@ export function RootMap({ children }: { children: React.ReactNode }) {
           ref={geoControlRef}
           position="bottom-right"
           showAccuracyCircle={false}
+          positionOptions={{ enableHighAccuracy: true }}
           onGeolocate={({ coords: { latitude, longitude } }) =>
             dispatch({
               type: "update_state",
               payload: {
-                userLocation: [latitude, longitude],
+                userLocation: [longitude, latitude],
               },
             })
           }
         />
-
         {contextMenu && (
           <Popup
             anchor="top-left"

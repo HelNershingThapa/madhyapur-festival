@@ -51,8 +51,8 @@ export function PoiMarker(props: MarkerProps) {
     <Marker {...props}>
       <img
         src={"/img/selected-marker.png"}
-        width={20}
-        height={20}
+        width={24}
+        height={24}
         alt="search result marker"
       />
     </Marker>

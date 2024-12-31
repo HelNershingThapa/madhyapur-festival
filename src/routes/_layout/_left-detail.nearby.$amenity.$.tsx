@@ -1,17 +1,26 @@
 import * as React from "react";
-import { Layer, Source, useMap } from "react-map-gl/maplibre";
+import {
+  Layer,
+  type LngLatBoundsLike,
+  Source,
+  useMap,
+} from "react-map-gl/maplibre";
 import { uid } from "react-uid";
 
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { bbox, lineString } from "@turf/turf";
+import {
+  createFileRoute,
+  useNavigate,
+  useParams,
+} from "@tanstack/react-router";
+import * as turf from "@turf/turf";
 import axios from "axios";
 import GeoJSON from "geojson";
 
 import PoiListItem from "@/components/PoiListItem";
 import { TypographyH4 } from "@/components/typography";
 import { amenities } from "@/config";
-import { StateContext, StateDispatchContext } from "@/StateContext";
+import { StateDispatchContext } from "@/StateContext";
 import { Place } from "@/types/place";
 
 export const Route = createFileRoute("/_layout/_left-detail/nearby/$amenity/$")(
@@ -20,7 +29,15 @@ export const Route = createFileRoute("/_layout/_left-detail/nearby/$amenity/$")(
   },
 );
 
-const getNearbyPlaces = async ({ amenity, latitude, longitude }) => {
+const getNearbyPlaces = async ({
+  amenity,
+  latitude,
+  longitude,
+}: {
+  amenity: string;
+  latitude: number;
+  longitude: number;
+}) => {
   const res = await axios.get(
     `${import.meta.env.VITE_BAATO_API_URL}/v1/search/nearby`,
     {
@@ -39,32 +56,32 @@ const getNearbyPlaces = async ({ amenity, latitude, longitude }) => {
 };
 
 function RouteComponent() {
-  const params = useParams({ from: "/_layout/_left-detail/nearby/$amenity/$" });
-  const state = React.useContext(StateContext);
+  const { amenity } = useParams({
+    from: "/_layout/_left-detail/nearby/$amenity/$",
+  });
   const dispatch = React.useContext(StateDispatchContext);
   const { current: map } = useMap();
+  const navigate = useNavigate();
+  const [hoveredPoiIndex, setHoveredPoiIndex] = React.useState<number>(-1);
+  const [viewportCenter] = React.useState(map!.getCenter());
 
-  const { userLocation, lat, lng } = state;
-  const viewportLatLng = [lat, lng];
   const { isLoading, data: pois } = useQuery({
     queryKey: [
       "nearby",
       {
-        latitude: userLocation?.[0] || viewportLatLng[0],
-        longitude: userLocation?.[1] || viewportLatLng[1],
-        amenity: params.amenity,
+        latitude: viewportCenter?.lat,
+        longitude: viewportCenter?.lng,
+        amenity: amenity,
       },
     ],
     queryFn: async () =>
       await getNearbyPlaces({
-        latitude: userLocation?.[0] || viewportLatLng[0],
-        longitude: userLocation?.[1] || viewportLatLng[1],
-        amenity: params.amenity,
+        latitude: viewportCenter?.lat,
+        longitude: viewportCenter?.lng,
+        amenity: amenity,
       }),
-    enabled: !!params.amenity,
+    enabled: !!amenity,
   });
-
-  const [hoveredPoiIndex, setHoveredPoiIndex] = React.useState(null);
 
   React.useEffect(() => {
     map?.on("mouseenter", `points`, () => {
@@ -73,30 +90,28 @@ function RouteComponent() {
     map?.on("mouseleave", `points`, () => {
       map.getCanvas().style.cursor = "";
     });
-
     map?.on("click", "points", (e) => {
-      const clickedPoi = pois.find(
-        (feature) => feature.name === e.features[0].properties.name,
-      );
-      dispatch({
-        type: "nearby_poi_clicked",
-        payload: {
-          poi: clickedPoi,
-        },
-      });
+      const placeId = e.features?.[0].properties.placeId;
+      if (placeId)
+        navigate({
+          to: "/places/$placeId",
+          params: {
+            placeId,
+          },
+        });
     });
-  }, []);
+  }, [dispatch, map, navigate, pois]);
 
   React.useEffect(() => {
     dispatch({
       type: "update_state",
       payload: {
         searchQuery:
-          amenities.find((places) => places.value === params.amenity)?.label ||
+          amenities.find((places) => places.value === amenity)?.label ??
           "Unknown",
       },
     });
-  }, []);
+  }, [dispatch, amenity]);
 
   React.useEffect(() => {
     dispatch({
@@ -105,7 +120,7 @@ function RouteComponent() {
         nearbyLoading: isLoading,
       },
     });
-  }, [isLoading]);
+  }, [dispatch, isLoading]);
 
   React.useEffect(() => {
     if (!pois) return;
@@ -116,15 +131,14 @@ function RouteComponent() {
       },
     });
     // fit map bounds to amenity markers
-    const line = lineString(
-      pois.map((poi) => [poi.centroid.lon, poi.centroid.lat]),
-    );
+    const coordinates = pois.map((poi) => [poi.centroid.lon, poi.centroid.lat]);
+    const line = turf.lineString(coordinates);
 
-    const bounds = bbox(line);
+    const bounds = turf.bbox(line) as LngLatBoundsLike;
     map?.fitBounds(bounds, {
       padding: { top: 100, bottom: 50, left: 450, right: 50 },
     });
-  }, [pois]);
+  }, [dispatch, map, pois]);
 
   const getPoisGeojson = React.useCallback(() => {
     const geojson = GeoJSON.parse(pois, {
@@ -147,7 +161,7 @@ function RouteComponent() {
           type="symbol"
           source="points"
           layout={{
-            "icon-image": `marker-${params.amenity}`,
+            "icon-image": `marker-${amenity}`,
             "icon-size": [
               "case",
               ["==", ["get", "markerIndex"], hoveredPoiIndex],
@@ -180,7 +194,7 @@ function RouteComponent() {
           }}
         />
       </Source>
-      <div className="w-full max-w-full py-0">
+      <div>
         <TypographyH4 className="mb-1 px-3">Results</TypographyH4>
         {pois.map((poi, index) => (
           <PoiListItem

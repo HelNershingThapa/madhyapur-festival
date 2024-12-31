@@ -34,20 +34,12 @@ function reducer(state: StateContextType, action) {
         ...state,
         searchQuery: "",
         isClearSearchShown: false,
-        pois: [],
       };
     case "search_results_cleared":
       return {
         ...state,
         searchQuery: "",
         isClearSearchShown: false,
-        pois: [],
-      };
-    case "waypoints_order_changed":
-      return {
-        ...state,
-        routingPoints: action.payload.newRoutingPoints,
-        currentMarkers: action.payload.newCurrentMarkers,
       };
     case "focussed_changed":
       return {
@@ -58,11 +50,6 @@ function reducer(state: StateContextType, action) {
       return {
         ...state,
         routingPoints: action.payload.newPoints,
-      };
-    case "nearby_poi_clicked":
-      return {
-        ...state,
-        drawerOpen: true,
       };
     case "contribution_list_item_clicked":
       return {
@@ -101,16 +88,12 @@ const initialState = {
   mapStyle: `https://tileboundaries.baato.io/admin_boundary/breeze.json?key=${import.meta.env.VITE_BAATO_ACCESS_TOKEN}`,
   searchQuery: "",
   isClearSearchShown: false,
-  isDirectionsLoading: false,
   userLocation: null,
   nearbyLoading: false,
   activeTransitInstruction: 0,
-  pois: [],
-  isAddMissingDialogOpen: false,
   isReportIncidentDialogOpen: false,
   isLoggedIn: false,
   isDisplaySignInPrompt: false,
-  drawerOpen: false,
   // REFS
   routingPoints: [
     {
@@ -122,10 +105,8 @@ const initialState = {
       value: null,
     },
   ],
-  routes: [],
   transitInstructions: {},
   marker: null,
-  currentMarkers: [],
   focussed: null,
   contributionPlaceId: null,
   isContributionsLoading: false,

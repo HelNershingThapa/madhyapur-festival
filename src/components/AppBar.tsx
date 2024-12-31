@@ -14,7 +14,15 @@ import {
 import { auth } from "@/firebase-config";
 import { StateDispatchContext } from "@/StateContext";
 
-export function AppDrawer({ isAppDrawerOpen, setIsAppDrawerOpen }) {
+interface AppDrawerProps {
+  isAppDrawerOpen: boolean;
+  setIsAppDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function AppDrawer({
+  isAppDrawerOpen,
+  setIsAppDrawerOpen,
+}: AppDrawerProps) {
   const navigate = useNavigate();
   const params = useParams({ strict: false });
   const dispatch = useContext(StateDispatchContext);
@@ -47,7 +55,7 @@ export function AppDrawer({ isAppDrawerOpen, setIsAppDrawerOpen }) {
       return;
     }
     navigate({
-      to: "/contributions/$",
+      to: "/contributions",
       params: {
         _splat: params._splat,
       },

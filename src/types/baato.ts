@@ -21,12 +21,16 @@ export type NearbyPlace = Place & {
   open: null | boolean;
 };
 
-export type ReverseGeocodingResult = {
+export type Result<T> = {
   timestamp: string;
   status: number;
   message: string;
-  data: ReverseGeocodingResponse[];
+  data: T;
 };
+
+export type ReverseGeocodingResult = Result<ReverseGeocodingResponse[]>;
+
+export type NearbyResponse = Result<NearbyPlace[]>;
 
 export type ReverseGeocodingResponse = {
   placeId: number;

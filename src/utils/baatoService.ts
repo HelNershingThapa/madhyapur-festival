@@ -3,6 +3,7 @@ import axios from "axios";
 
 import {
   DirectionsMode,
+  NearbyResponse,
   Place,
   ReverseGeocodingResult,
   Route,
@@ -68,7 +69,7 @@ class BaatoService {
           },
         },
       );
-      return response;
+      return response.data as NearbyResponse;
     } catch (error) {
       console.error("Error during nearby:", error);
       throw error; // Re-throw the error to be caught by the component

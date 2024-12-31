@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "@tanstack/react-router";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 
 import { DeleteAccount } from "@/components/DeleteAccount";
@@ -104,14 +105,13 @@ export function Login() {
 
 export const SignInAction = ({ shouldOpenContributeDialog = false }) => {
   const dispatch = useStateDispatchContext();
+  const navigate = useNavigate();
+
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then(() => {
       if (shouldOpenContributeDialog) {
-        dispatch({
-          type: "update_state",
-          payload: {
-            isAddMissingDialogOpen: true,
-          },
+        navigate({
+          to: "/add-place/$",
         });
       }
       dispatch({
